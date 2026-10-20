@@ -1,0 +1,4 @@
+-r requirements-benchmark.txt
+torch
+timm
+onnx

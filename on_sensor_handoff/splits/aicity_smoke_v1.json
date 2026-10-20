@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "source_manifest_sha256": "cf5ec664ced109af04facc4da2428da079e69b9d6864b158d77b02df18244045",
+  "selection": "12 evenly spaced eligible identity IDs per scenario; first valid positive trial per identity, paired with its absent trial",
+  "splits": {
+    "train": [
+      "S01-id1-c002-to-c003",
+      "S01-id10-c001-to-c002",
+      "S01-id18-c001-to-c002",
+      "S01-id27-c001-to-c005",
+      "S01-id35-c001-to-c003",
+      "S01-id44-c003-to-c005",
+      "S01-id52-c001-to-c003",
+      "S01-id61-c001-to-c003",
+      "S01-id69-c001-to-c003",
+      "S01-id78-c001-to-c003",
+      "S01-id86-c001-to-c003",
+      "S01-id95-c003-to-c005"
+    ],
+    "validation": [
+      "S02-id96-c006-to-c007",
+      "S02-id109-c006-to-c007",
+      "S02-id122-c007-to-c008",
+      "S02-id135-c008-to-c006",
+      "S02-id148-c008-to-c009",
+      "S02-id161-c007-to-c009",
+      "S02-id174-c006-to-c007",
+      "S02-id187-c006-to-c009",
+      "S02-id200-c006-to-c009",
+      "S02-id213-c006-to-c007",
+      "S02-id227-c006-to-c007",
+      "S02-id240-c008-to-c009"
+    ],
+    "test": [
+      "S04-id259-c019-to-c018",
+      "S04-id265-c018-to-c019",
+      "S04-id272-c029-to-c030",
+      "S04-id279-c031-to-c030",
+      "S04-id285-c029-to-c030",
+      "S04-id291-c027-to-c026",
+      "S04-id298-c028-to-c027",
+      "S04-id304-c035-to-c033",
+      "S04-id310-c034-to-c033",
+      "S04-id317-c036-to-c037",
+      "S04-id323-c040-to-c038",
+      "S04-id329-c037-to-c036"
+    ]
+  }
+}

@@ -22,7 +22,7 @@ def load_copybook(dataset_path):
         if isinstance(meta, dict):                          # copybook layout
             meta = meta.get("labels") or meta.get("shots")
         shots = []
-        for m in meta:                                      # manifest order
+        for m in meta:                                      # manfifest order
             name = f"shots/{m['file']}"
             img = Image.open(io.BytesIO(zf.read(name))).convert("L")
             shots.append(np.asarray(img, np.float32) / 255.0)

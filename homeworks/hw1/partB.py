@@ -14,11 +14,11 @@ import json
 BUDGET = 50_000
 def part_b_features(images):
     """images [n,64,64] in [0,1]  ->  features [n, d], bounded."""
-    # Average each 4x4 block, then make dark ink positive and flatten.
+    # Average each 8x8 block to keep broader stroke shapes.
     # ▼ blank B1 — representation · New idea · this project
 
-    pooled = images.reshape(-1, 16, 4, 16, 4).mean(axis=(2, 4))
-    return ((0.5 - pooled) * 2.0).reshape(len(images), -1)
+    pooled = images.reshape(-1, 8, 8, 8, 8).mean(axis=(2, 4))
+    return (1.0 - pooled).reshape(len(images), -1)
 
 def count_params(model):
     # ▼ blank B2 — parameter accounting · Lecture 9
@@ -31,16 +31,16 @@ class MLP(nn.Module):
     def __init__(self):
         super().__init__()
         # ▼ blank B3a — declare your layers · Lecture 9
-        self.fc1 = nn.Linear(16 * 16, 128)
-        self.fc2 = nn.Linear(128, 64)
-        self.fc3 = nn.Linear(64, 11)   # N_CLASSES = 11
+        self.fc1 = nn.Linear(8 * 8, 256)
+        self.fc2 = nn.Linear(256, 96)
+        self.fc3 = nn.Linear(96, 11)   # N_CLASSES = 11
     def forward(self, x):                     # x: [1,1,64,64]
         # ▼ blank B3b — forward: preprocessing in-graph + layers · Lecture 9
 
-        x = x.reshape(-1, 16, 4, 16, 4).mean(dim=(2, 4))
-        x = ((0.5 - x) * 2.0).reshape(x.shape[0], -1)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
+        x = F.avg_pool2d(x, kernel_size=8)
+        x = (1.0 - x).reshape(x.shape[0], -1)
+        x = torch.tanh(self.fc1(x))
+        x = torch.tanh(self.fc2(x))
         x = self.fc3(x)
         return x
         
@@ -48,7 +48,7 @@ def init_weights(m):
     # ▼ blank B4 — initialization policy · Lecture 9
 
     if isinstance(m, nn.Linear):
-        torch.nn.init.xavier_uniform_(m.weight)
+        torch.nn.init.xavier_uniform_(m.weight, gain=nn.init.calculate_gain("tanh"))
         m.bias.data.fill_(0.01)
 
 def part_b_train(model, images, y, imgs_val, yval, epochs=200, lr=0.1, batch=32):
@@ -88,7 +88,7 @@ def export_mlp(model, path="mlp_model.onnx"):
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", default="/home/megrad/Documents/GitHub/CSCI541/pj1_dataset_2026-10-02T14-15-39.zip", help="your Copybook export")
+    ap.add_argument("--dataset", default="/home/megrad/Documents/GitHub/CSCI541/pj1_combined_10aug.zip", help="your Copybook export")
     ap.add_argument("--val", default=None, help="optional manifest dir, e.g. the public set")
     args, _unknown = ap.parse_known_args()   # Colab injects -f kernel.json; ignore it
     images, labels = load_copybook(args.dataset)

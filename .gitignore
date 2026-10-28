@@ -1,3 +1,5 @@
 .venv/
 *.onnx
 *.zip
+*.jpg
+*.pyc

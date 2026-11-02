@@ -5,7 +5,7 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("dataset", choices=("aicity", "visdrone", "vrai", "vru", "isaid",
+    parser.add_argument("dataset", choices=("aicity", "visdrone", "vrai", "vru", "isaid", "vehicle-masks",
                                             "bucktales", "sop", "abo", "folders", "sues",
                                             "visdrone-folders"))
     parser.add_argument("rest", nargs=argparse.REMAINDER,
@@ -21,6 +21,8 @@ def main():
         from utils.data_sources.vru import main as run
     elif args.dataset == "isaid":
         from utils.data_sources.isaid_masks import main as run
+    elif args.dataset == "vehicle-masks":
+        from utils.data_sources.vehicle_masks import main as run
     elif args.dataset == "bucktales":
         from utils.crossdrone.command import main as run
         mode = args.rest or ["prepare"]

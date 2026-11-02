@@ -18,7 +18,9 @@ KEYS = set(PATH_KEYS) | {
     "evaluate_after_train", "visdrone", "video", "select", "aicity", "crossdrone",
     "instances_per_id", "steps_per_epoch", "source_batch_weights",
     "triplet_margin", "triplet_weight", "mask_every", "mask_loss_weight",
-    "selection", "benchmark", "comparison", "aerial_mask_eval", "vrai", "vru",
+    "selection", "benchmark", "comparison", "vehicle_comparison", "vehicle_warmstart",
+    "vehicle_masks",
+    "aerial_mask_eval", "vrai", "vru",
 }
 
 
@@ -73,6 +75,9 @@ def read_config():
     del config["crossdrone"]  # The cross-drone evaluation reads this section itself.
     del config["benchmark"]  # The comparison report reads this section itself.
     del config["comparison"]  # The matched experiment reads this section itself.
+    del config["vehicle_comparison"]  # The vehicle-only matched experiment reads this section itself.
+    del config["vehicle_warmstart"]  # The matched continuation reads this section itself.
+    del config["vehicle_masks"]  # Vehicle mask preparation reads this section itself.
     del config["aerial_mask_eval"]  # The aerial mask check reads this section itself.
     del config["vrai"]  # The VRAI preparation command reads this section itself.
     del config["vru"]  # The VRU preparation command reads this section itself.
@@ -143,16 +148,23 @@ def read_config():
     return argparse.Namespace(**config)
 
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="Train and evaluate the joint segmentation + ReID model using config.yaml."
     )
-    parser.add_argument("mode", nargs="?", choices=("compare", "visdrone"),
+    parser.add_argument("mode", nargs="?", choices=("compare", "compare-vehicles", "warmstart-vehicles", "visdrone"),
                         help="optional matched comparison or separate VisDrone training")
     options = parser.parse_args()
     if options.mode == "compare":
         from utils.experiments.compare import main as compare
         return compare()
+    if options.mode == "compare-vehicles":
+        from utils.experiments.vehicle_compare import main as compare_vehicles
+        return compare_vehicles()
+    if options.mode == "warmstart-vehicles":
+        from utils.experiments.vehicle_warmstart import main as warmstart_vehicles
+        return warmstart_vehicles()
     if options.mode == "visdrone":
         from utils.data_sources.visdrone import main as visdrone
         return visdrone("train")

@@ -1,11 +1,22 @@
 # ShuffleNetV2 object masks and ReID
 
+**Current research target:** [FULL_FRAME_MOTS.md](FULL_FRAME_MOTS.md) describes
+the intended one-network vehicle detector, instance segmenter, and ReID
+encoder, with selective mask computation for the target. The existing
+ShuffleNetV2 model and the commands below operate on
+vehicle crops; they are baseline work, not the finished full-frame system.
+
 **Start here:** [ARCHITECTURE.md](ARCHITECTURE.md) shows the model diagram,
 training path, module map, command outputs, and where to make changes. The
-the four root commands are [train.py](train.py), [prepare.py](prepare.py),
+four root commands are [train.py](train.py), [prepare.py](prepare.py),
 [demo.py](demo.py), and [benchmark.py](benchmark.py). Their implementation
 is grouped by purpose under `utils/`. Edit [config.yaml](config.yaml), then
 run the command for the work you want to do.
+
+For a visual view of current vehicle rankings and the next targets, open
+[metrics/index.html](metrics/index.html). The full local tables are at
+[metrics/rankings.html](metrics/rankings.html). Run `python benchmark.py metrics`
+to refresh both HTML files from the saved benchmark CSVs.
 
 ## Data layout
 
@@ -19,6 +30,93 @@ identity manifests; iSAID's mask ZIPs remain as the original annotation data.
 Model weights and training recovery states live in `checkpoints/`.
 
 For the research comparison, see [aerial dataset priorities and preparation](AERIAL_DATA.md).
+For a fixed VRU vehicle retrieval comparison, run `python prepare.py vru` once,
+then `python benchmark.py vru` on the GPU machine. The command evaluates the
+checkpoints listed in `config.yaml`, the same-checkpoint global-pooling ablation,
+and the authors' trained MSINet vehicle ReID baseline on the full, held-out
+VRU test set. It writes
+`metrics/vru_benchmark.csv`. The test manifests are deliberately absent
+from training's `sources` list. VRU has no released camera IDs in its split
+files, so this score does not establish cross-drone matching. See
+[the VRU protocol](AERIAL_DATA.md#add-vru-and-use-the-uavid-toolkit) for how
+to score external baselines on the same images.
+
+## Vehicle-only mask and ReID experiment
+
+The previous VOC mask head covers only part of many VRU cars. Inspect the
+current masks with `python benchmark.py vru-masks`; it writes one MP4 at
+`data/aerial/vru/mask_diagnostic.mp4`. The first eight crops include iSAID
+validation truth; VRU crops have no pixel truth. `python benchmark.py masks`
+prints the small labeled aerial mask diagnostic.
+
+Run `python prepare.py vehicle-masks` to create binary vehicle crops from
+**iSAID train** polygons and verified matching DOTA train images. It downloads
+only the selected scenes and resumes by reusing complete crop/mask files.
+It requests DOTA metadata in batches of up to 100 scenes, waits on HTTP 429,
+and reuses completed crops if preparation is restarted.
+The final `train.csv` appears only after all requested scenes are ready, so
+training cannot accidentally use an incomplete mask set. The default config
+prepares 200 scenes × 16 masks. Keep the separate iSAID
+validation crops out of this training set.
+
+Then run `python train.py compare-vehicles`. It trains two ShuffleNetV2 arms
+from identical ImageNet initialization: VRU ReID only and VRU ReID plus a
+two-class vehicle mask head. Both use the same VRU train identities, seed,
+augmentations, batch size, 12,000 ReID updates, and final epoch. The joint arm
+also receives an iSAID train mask batch every second update, so its total
+compute is higher. VRU test identities are never used for selection. Both
+arms save resumable checkpoints under `checkpoints/vehicle_controlled/`.
+Vehicle crops are resized in full to 224×224 during this experiment; the
+previous ImageNet center crop and random training crop could remove parts of
+wide or tall vehicles. Both arms use this same preprocessing, and the VRU
+benchmark reads it from each saved checkpoint.
+After both finish, `python benchmark.py vru` automatically adds them and the
+joint model's global-pooling ablation to the fixed VRU table. Re-run
+`python benchmark.py masks` and `python benchmark.py vru-masks` to inspect the
+new joint mask head. The video command automatically selects the finished
+vehicle joint checkpoint.
+Run `python benchmark.py vrai` for a second, cross-camera test of the two
+vehicle models and the joint model's global-pooling ablation. It writes
+`metrics/vrai_local_benchmark.csv`. This uses an identity-disjoint local
+split of VRAI's official **training** images, not the official VRAI test set.
+The completed VRU-only training comparison reaches 57.32% Rank-1 / 54.79%
+mAP for ReID-only, 51.84% / 49.87% for joint mask pooling, and 46.69% /
+44.11% for the same joint checkpoint with global pooling on this VRAI split.
+Both models were trained on VRU identities and evaluated on VRAI without
+VRAI fine-tuning. See `metrics/vrai_local_benchmark.csv` for the exact
+query count, parameters, and CPU latency.
+
+## Warm-start vehicle experiment
+
+Run `python train.py warmstart-vehicles` to continue the finished vehicle
+ReID-only checkpoint in two new arms. Both load the same backbone, ReID head,
+and VRU identity classifier; both see the same VRU identity batches for four
+additional 1,000-step epochs at a lower learning rate. The control remains
+ReID-only. The joint arm adds binary iSAID masks every second step with a
+0.2 loss weight. It uses global pooling in epoch 1 while the untrained mask
+head learns, then mask-guided pooling in epochs 2–4. The joint arm has extra
+mask compute; the ReID training budget is matched. Both arms save full
+recovery state after each epoch in `checkpoints/vehicle_warmstart/`, so the
+same command resumes an interrupted run.
+
+After both arms finish, run `python benchmark.py vru` and
+`python benchmark.py vrai`. Each automatically includes the new arms and the
+new joint model's global-pooling ablation. `python benchmark.py masks` checks
+its foreground head on the small iSAID validation sample, and
+`python benchmark.py vru-masks` makes a new MP4. VRU and the local VRAI split
+have already informed this experiment, so treat their next scores as
+exploratory rather than untouched final-test evidence.
+
+The completed warm-start run improved the joint model to **56.60% Rank-1 /
+67.64% mAP on VRU** and **57.07% / 54.16% on the local VRAI split**. Its
+matched ReID-only continuation remains ahead at **62.42% / 73.06% VRU** and
+**58.30% / 55.76% VRAI**. Mask pooling beats global pooling within the
+warm-start joint checkpoint on both splits. On just four iSAID validation
+crops per vehicle size, the new mask head reaches 51.74% Small_Vehicle and
+35.21% Large_Vehicle IoU, below the earlier joint model's 67.82% and 67.52%.
+The video shows some neighboring vehicles marked as foreground. A larger,
+held-out vehicle-mask set is needed before treating that mask difference as
+reliable.
 `python prepare.py vrai` now splits the official VRAI **training** identities into
 disjoint train, calibration, and final cross-camera test IDs (5,042/630/630).
 It preserves the original `train.csv` used in the completed run.

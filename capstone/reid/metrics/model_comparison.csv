@@ -1,0 +1,7 @@
+model,rank1_percent,map_percent,parameters,latency_ms,crop_size,hardware,protocol
+ReID-only ShuffleNetV2,,,,,,,
+Joint ShuffleNetV2 mask pooling,,,,,,,
+Joint ShuffleNetV2 global pooling,,,,,,,
+OSNet trained on same vehicle IDs,,,,,,,
+TransReID trained on same vehicle IDs,,,,,,,
+Separate segmenter plus ReID model,,,,,,,

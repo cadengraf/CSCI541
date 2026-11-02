@@ -17,6 +17,16 @@ def training_signature(args):
             "mask_loss_weight", "learning_rate", "seed", "augmentation",
             "reid_only", "selection", "resume")
     settings = {key: getattr(args, key, None) for key in keys}
+    if getattr(args, "mask_manifest", None) is not None:
+        settings["mask_manifest"] = args.mask_manifest
+    if getattr(args, "mask_classes", 21) != 21:
+        settings["mask_classes"] = args.mask_classes
+    if getattr(args, "vehicle_preprocess", False):
+        settings["vehicle_preprocess"] = True
+    if getattr(args, "resume_classifier", None) is not None:
+        settings["resume_classifier"] = args.resume_classifier
+    if getattr(args, "mask_pool_start_epoch", None) is not None:
+        settings["mask_pool_start_epoch"] = args.mask_pool_start_epoch
     return hashlib.sha256(json.dumps(settings, sort_keys=True, default=str).encode()).hexdigest()
 
 
@@ -45,6 +55,9 @@ def save_joint_checkpoint(model, args, epoch, selection_metrics, selection_score
     temporary = args.checkpoint.with_name(args.checkpoint.name + ".partial")
     torch.save({"model": model.state_dict(), "embedding_size": EMBEDDING_SIZE,
                 "use_mask_pool": model.use_mask_pool,
+                "mask_classes": model.mask_classes,
+                "preprocessing": "vehicle_full_resize" if getattr(args, "vehicle_preprocess", False)
+                                 else "imagenet_center_crop",
                 "segmentation_trained": not args.reid_only,
                 "training": {"loss": "identity_ce+batch_hard_triplet",
                              "identities_per_batch": args.batch_size // instances_per_id,

@@ -18,7 +18,7 @@ from torchvision.models import ShuffleNet_V2_X1_5_Weights
 from torchvision.transforms import InterpolationMode
 from torchvision.transforms import functional as TF
 
-from .identity_data import NORMALIZE, item_transform
+from .identity_data import NORMALIZE, item_transform, vehicle_item_transform
 
 
 class InShop(Dataset):
@@ -135,7 +135,8 @@ class AmazonBerkeleyObjects(Dataset):
 class ManifestItems(Dataset):
     """Repeated identities from a CSV; optional x,y,w,h crops for tracking data."""
 
-    def __init__(self, manifest: Path, training: bool = False, augmentation: str = "basic"):
+    def __init__(self, manifest: Path, training: bool = False, augmentation: str = "basic",
+                 preprocessing: str = "imagenet"):
         if not manifest.is_file():
             raise FileNotFoundError(f"Missing identity manifest: {manifest}")
         self.samples = []
@@ -171,8 +172,13 @@ class ManifestItems(Dataset):
         self.labels = [label for _, label, _ in self.samples]
         if training and any(count < 2 for count in Counter(self.labels).values()):
             raise ValueError(f"Every training identity in {manifest} needs at least two images")
-        self.transform = (item_transform(augmentation) if training
-                          else ShuffleNet_V2_X1_5_Weights.DEFAULT.transforms())
+        if preprocessing == "vehicle":
+            self.transform = vehicle_item_transform(augmentation, training)
+        elif preprocessing == "imagenet":
+            self.transform = (item_transform(augmentation) if training
+                              else ShuffleNet_V2_X1_5_Weights.DEFAULT.transforms())
+        else:
+            raise ValueError(f"Unknown manifest preprocessing: {preprocessing}")
 
     def __len__(self):
         return len(self.samples)
@@ -290,3 +296,43 @@ class ForegroundVOC(Dataset):
             image = self.image_resize(image)
             mask = self.mask_resize(mask)
         return NORMALIZE(transforms.ToTensor()(image)), torch.as_tensor(np.array(mask).copy(), dtype=torch.long)
+
+
+class VehicleMaskCrops(Dataset):
+    """Binary vehicle instance crops prepared from iSAID train polygons."""
+
+    def __init__(self, manifest: Path, augmentation: str = "strong"):
+        if not manifest.is_file():
+            raise FileNotFoundError(f"Missing vehicle mask manifest: {manifest}; run `python prepare.py vehicle-masks`")
+        with manifest.open(newline="") as file:
+            reader = csv.DictReader(file)
+            if not reader.fieldnames or not {"image", "mask"}.issubset(reader.fieldnames):
+                raise ValueError(f"{manifest} needs image,mask columns")
+            self.rows = [(manifest.parent / row["image"], manifest.parent / row["mask"])
+                         for row in reader]
+        if not self.rows:
+            raise ValueError(f"No vehicle masks in {manifest}")
+        for image, mask in self.rows:
+            if not image.is_file() or not mask.is_file():
+                raise FileNotFoundError(f"Missing vehicle image or mask: {image}, {mask}")
+        self.augmentation = augmentation
+        self.jitter = transforms.ColorJitter(brightness=0.2, contrast=0.2,
+                                             saturation=0.15, hue=0.02)
+
+    def __len__(self):
+        return len(self.rows)
+
+    def __getitem__(self, index):
+        image_path, mask_path = self.rows[index]
+        with Image.open(image_path) as source, Image.open(mask_path) as annotation:
+            image, mask = source.convert("RGB"), annotation.convert("L")
+        if image.size != mask.size:
+            raise ValueError(f"Vehicle image/mask size mismatch: {image_path}")
+        image = TF.resize(image, (224, 224), interpolation=InterpolationMode.BILINEAR)
+        mask = TF.resize(mask, (224, 224), interpolation=InterpolationMode.NEAREST)
+        if self.augmentation != "none":
+            if random.random() < 0.5:
+                image, mask = TF.hflip(image), TF.hflip(mask)
+            image = self.jitter(image)
+        binary = (np.array(mask) > 0).astype(np.int64)
+        return NORMALIZE(transforms.ToTensor()(image)), torch.from_numpy(binary)

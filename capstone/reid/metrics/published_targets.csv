@@ -1,0 +1,3 @@
+paper,dataset,rank1_threshold_percent,map_threshold_percent,our_rank1_percent,our_map_percent,source,protocol_note
+VRAI Multi-task plus DP,VRAI official test,80.30,78.63,,,https://openaccess.thecvf.com/content_ICCV_2019/papers/Wang_Vehicle_Re-Identification_in_Aerial_Imagery_Dataset_and_Approach_ICCV_2019_paper.pdf,requires exact official test query and gallery protocol
+GASNet,VRU published protocol,97.45,98.51,,,https://www.mdpi.com/2072-4292/14/18/4603,local fixed gallery differs from the paper selection

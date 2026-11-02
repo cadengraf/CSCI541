@@ -1,5 +1,13 @@
 # How this project works
 
+**Target architecture:** [FULL_FRAME_MOTS.md](FULL_FRAME_MOTS.md) defines the
+vehicle system now being pursued: one full-frame network that detects vehicles
+and returns coarse ReID embeddings for candidates, with instance masks and
+refined embeddings for the selected target or a short list. The model
+described below is the existing **crop-only predecessor**, retained for
+baseline experiments. Its current benchmark scores do not measure full-frame
+detection or tracking.
+
 Start with [config.yaml](config.yaml). It chooses the datasets, training budget,
 starting weights, output checkpoint, and checkpoint-selection metrics. The
 short `.py` files in this directory are commands. Shared model and training
@@ -96,7 +104,10 @@ and mask evaluations. `utils/experiments/` contains the matched training run.
 | --- | --- | --- |
 | `python train.py` | Train and evaluate the joint model | `checkpoints/joint_aerial_validated.pt` |
 | `python train.py compare` | Train matched ReID-only and joint arms | `checkpoints/` comparison weights |
+| `python train.py compare-vehicles` | Train vehicle ReID-only and joint models from ImageNet weights | `checkpoints/vehicle_controlled/` |
+| `python train.py warmstart-vehicles` | Continue the vehicle ReID-only model in matched control and joint arms | `checkpoints/vehicle_warmstart/` |
 | `python benchmark.py` | Compare saved models on the same local crops | `data/benchmark.html`, `data/benchmark_figures/` |
+| `python benchmark.py vru`, `python benchmark.py vrai` | Compare vehicle models on VRU and the local cross-camera VRAI split | `metrics/vru_benchmark.csv`, `metrics/vrai_local_benchmark.csv` |
 | `python benchmark.py masks` | Compare mask heads on labeled aerial crops | Terminal IoU and Dice |
 | `python demo.py` | Show masks and ReID scores on a labeled VisDrone sequence | `data/reid_video.mp4` |
 | `python demo.py select` | Follow one selected object using embeddings and motion | `data/selected_reid.mp4` |

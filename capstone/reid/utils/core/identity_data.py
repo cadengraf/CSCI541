@@ -9,6 +9,7 @@ from pathlib import Path
 from PIL import Image
 from torch.utils.data import Dataset, Sampler
 from torchvision import transforms
+from torchvision.transforms import InterpolationMode
 from torchvision.models import ShuffleNet_V2_X1_5_Weights
 
 
@@ -39,6 +40,28 @@ def item_transform(augmentation: str):
     operations.extend([transforms.ToTensor(), NORMALIZE])
     if augmentation in ("moderate_occlusion", "strong"):
         # A small, occasional occlusion; keep most identity details visible.
+        operations.append(transforms.RandomErasing(p=0.12, scale=(0.02, 0.07), value=0))
+    return transforms.Compose(operations)
+
+
+def vehicle_item_transform(augmentation: str, training: bool):
+    """Keep the entire vehicle crop visible instead of center/random cropping it."""
+    operations = [transforms.Resize((224, 224), interpolation=InterpolationMode.BILINEAR)]
+    if training and augmentation != "none":
+        operations.append(transforms.RandomHorizontalFlip())
+        if augmentation in ("moderate", "moderate_occlusion", "strong"):
+            operations.extend([
+                transforms.RandomAffine(degrees=8, translate=(0.03, 0.03),
+                                        scale=(0.9, 1.1), fill=255),
+                transforms.RandomApply([transforms.ColorJitter(
+                    brightness=0.2, contrast=0.2, saturation=0.15, hue=0.03)], p=0.8),
+            ])
+        if augmentation == "strong":
+            operations.extend([transforms.RandomGrayscale(p=0.08),
+                               transforms.RandomApply([transforms.GaussianBlur(
+                                   kernel_size=3, sigma=(0.1, 1.0))], p=0.12)])
+    operations.extend([transforms.ToTensor(), NORMALIZE])
+    if training and augmentation in ("moderate_occlusion", "strong"):
         operations.append(transforms.RandomErasing(p=0.12, scale=(0.02, 0.07), value=0))
     return transforms.Compose(operations)
 

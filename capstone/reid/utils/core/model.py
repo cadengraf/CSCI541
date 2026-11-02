@@ -1,4 +1,4 @@
-"""Shared ShuffleNetV2 backbone with semantic mask and 128D ReID heads."""
+"""Shared ShuffleNetV2 backbone with a configurable mask head and 128D ReID head."""
 
 import torch
 import torch.nn.functional as F
@@ -9,18 +9,21 @@ EMBEDDING_SIZE = 128
 
 
 class JointNet(nn.Module):
-    def __init__(self, pretrained: bool, use_mask_pool: bool = True):
+    def __init__(self, pretrained: bool, use_mask_pool: bool = True, mask_classes: int = 21):
         super().__init__()
+        if mask_classes < 2:
+            raise ValueError("mask_classes must be at least 2")
+        self.mask_classes = mask_classes
         self.use_mask_pool = use_mask_pool
         self.backbone = shufflenet_v2_x1_5(
             weights=ShuffleNet_V2_X1_5_Weights.DEFAULT if pretrained else None
         )
-        self.mask_head = nn.Sequential(nn.Conv2d(176, 64, 3, padding=1), nn.ReLU(), nn.Conv2d(64, 21, 1))
-        self.mask_context = nn.Sequential(nn.Conv2d(352, 64, 1), nn.ReLU(), nn.Conv2d(64, 21, 1))
+        self.mask_head = nn.Sequential(nn.Conv2d(176, 64, 3, padding=1), nn.ReLU(), nn.Conv2d(64, mask_classes, 1))
+        self.mask_context = nn.Sequential(nn.Conv2d(352, 64, 1), nn.ReLU(), nn.Conv2d(64, mask_classes, 1))
         self.embed_head = nn.Linear(1024, EMBEDDING_SIZE)
 
     def forward(self, image):
-        """Return VOC logits (or None) and an unnormalized 128D embedding."""
+        """Return mask logits (or None) and an unnormalized 128D embedding."""
         x = self.backbone.maxpool(self.backbone.conv1(image))
         low = self.backbone.stage2(x)
         mid = self.backbone.stage3(low)
@@ -28,7 +31,7 @@ class JointNet(nn.Module):
         if getattr(self, "compute_mask", True):
             mask_logits = self.mask_head(low) + F.interpolate(
                 self.mask_context(mid), size=low.shape[-2:], mode="bilinear", align_corners=False
-            )  # 21 VOC classes, 28 x 28 for 224 x 224 input
+            )  # 28 x 28 for 224 x 224 input
         x = self.backbone.conv5(self.backbone.stage4(mid))
         if self.use_mask_pool:
             foreground = F.adaptive_avg_pool2d(1 - mask_logits.softmax(dim=1)[:, :1], x.shape[-2:])
@@ -41,6 +44,6 @@ class JointNet(nn.Module):
 
 def mask_loss(logits, targets):
     targets = F.interpolate(targets[:, None].float(), size=logits.shape[-2:], mode="nearest")[:, 0].long()
-    weights = torch.ones(21, device=logits.device)
+    weights = torch.ones(logits.shape[1], device=logits.device)
     weights[0] = 0.2  # VOC background dominates the pixels otherwise.
     return F.cross_entropy(logits, targets, weight=weights, ignore_index=255)

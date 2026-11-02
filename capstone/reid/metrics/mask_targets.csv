@@ -1,0 +1,5 @@
+experiment,metric,suggested_threshold,unit,next_result,measurement_rule
+Mask-guided versus global pooling,Rank-1 and mAP improvement,greater than 0,percentage points,,same joint checkpoint and identical query/gallery
+All aerial vehicles,foreground IoU,70,percent,,at least 200 held-out crops from multiple unseen scenes
+Small aerial vehicles,foreground IoU,70,percent,,report separately on the same held-out scenes
+Mask evaluation coverage,annotated vehicle crops,200,crops,,minimum project goal; include scene and size counts

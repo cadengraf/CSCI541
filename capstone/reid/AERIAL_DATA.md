@@ -46,9 +46,51 @@ its public test metadata lacks identity labels for local Rank-1/mAP.
 ### Add VRU and use the UAVid toolkit
 
 VRU now lives under `data/aerial/vru/source/`. `python prepare.py vru`
-created the official identity-disjoint VRU training manifest. The 8,000
-official test identities are excluded. VRU remains train-only in `config.yaml`;
-VRAI now uses a disjoint custom split of its official training IDs.
+creates the official identity-disjoint training manifest and a fixed, full-test
+query/gallery split. Following the [VRU paper](https://www.mdpi.com/2072-4292/14/18/4603),
+one image from each of the 8,000 test identities goes in the gallery and the
+rest are queries. The published split does not prescribe which image to choose;
+`config.yaml` fixes that choice with `vru.gallery_seed`. Thus these are **local
+reproducible scores**, not necessarily the paper's exact random-gallery scores.
+VRU remains train-only in `sources`, so its test IDs cannot select checkpoints.
+Run `python benchmark.py vru` after preparation to compare the configured
+checkpoints on exactly these images. It writes `metrics/vru_benchmark.csv`
+with Rank-1, Rank-5, Rank-10, mAP, parameter count and single-crop CPU latency.
+VRU's provided lists have no camera IDs: this benchmark measures aerial vehicle
+retrieval, **not verified cross-drone retrieval**. Since the gallery has one
+positive per identity, mAP here is mean reciprocal rank. To evaluate an external
+baseline (for example, [CLIP-ReID, MSINet or AdaSP](https://github.com/tranminhvu945/Benchmarking-ReID)),
+extract vectors for **the exact CSV rows in order** and save a Torch dictionary
+with keys `query_paths`, `gallery_paths` (absolute path strings matching the CSVs)
+and `query`, `gallery` (2D feature tensors). List its file under
+`vru.external_features` in `config.yaml`. This validates identical images and
+uses the same cosine-ranking code. External baseline preprocessing and inference
+latency must be reported separately; their published scores are not interchangeable
+with this locally fixed gallery. VRAI uses a disjoint custom split of its
+official training IDs.
+
+The VRU benchmark now also evaluates **mask-guided versus global pooling from
+the same `joint_aerial_validated.pt` weights**, plus the authors' clean-VRU
+[MSINet implementation and checkpoint](https://github.com/tranminhvu945/Benchmarking-ReID).
+The MSINet source is stored locally at
+`data/aerial/vru/baselines/Benchmarking-ReID` (commit
+`8b1cb5551fadfb4b5dde62769a250ba2416e13fe`); the extracted clean-VRU
+weight file is `data/aerial/vru/baselines/msinet_vru_clean.pth` (SHA-256
+`3b31ed0410c7901aa26aa603c75f3e6e7519d6c9702a6bba7a0585f9b0f66962`).
+It uses its own published 256×256 test preprocessing, while every method sees
+the **same original VRU image paths** and uses our cosine scorer. The baseline
+was trained on VRU's 7,085 official training identities, but its training
+budget and architecture differ from ours. The CSV reports measured active
+parameters and CPU inference time on this machine; it does not include image
+decoding, detection, or tracking. Run `python benchmark.py vru` on a CUDA
+machine for the full 91,595-image comparison.
+
+For the vehicle-only matched experiment, `python prepare.py vehicle-masks`
+uses the [iSAID train polygons](https://captain-whu.github.io/iSAID/dataset.html)
+and the [DOTA v1.0 train image mirror](https://huggingface.co/datasets/finedet/dota).
+It verifies vehicle-box alignment before producing binary object crops; the
+separate iSAID validation scenes remain evaluation-only. See the README for
+the `python train.py compare-vehicles` and follow-up benchmark commands.
 
 The [UAVidToolKit](https://github.com/YeLyuUT/UAVidToolKit) source is downloaded
 under `capstone/reid/utils/UAVidToolKit`. It provides label conversion,

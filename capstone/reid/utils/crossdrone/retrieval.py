@@ -59,7 +59,8 @@ def load_model(checkpoint, device):
     saved = torch.load(checkpoint, map_location="cpu", weights_only=True)
     if not saved.get("use_mask_pool", True):
         raise ValueError("Cross-drone ablation requires a joint model with a mask head")
-    model = JointNet(pretrained=False, use_mask_pool=True)
+    model = JointNet(pretrained=False, use_mask_pool=True,
+                     mask_classes=saved.get("mask_classes", 21))
     model.load_state_dict(saved["model"])
     return model.to(device).eval()
 

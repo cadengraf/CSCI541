@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 from .checkpointing import (recovery_path, save_joint_checkpoint, save_recovery,
                             training_signature)
 from .datasets import (AmazonBerkeleyObjects, ForegroundVOC, IdentityPartition,
-                       InShop, ManifestItems, MixedItems, index_partition)
+                       InShop, ManifestItems, MixedItems, VehicleMaskCrops, index_partition)
 from .identity_data import PKSampler, Products
 from .metrics import selection_metrics, selection_score
 from .model import EMBEDDING_SIZE, JointNet, mask_loss
@@ -35,7 +35,9 @@ def train(args):
         source_names.append("fashion")
     for source in args.source:
         name, train_manifest = source[:2]
-        sources.append(ManifestItems(Path(train_manifest), training=True, augmentation=args.augmentation))
+        sources.append(ManifestItems(Path(train_manifest), training=True, augmentation=args.augmentation,
+                                     preprocessing="vehicle" if getattr(args, "vehicle_preprocess", False)
+                                     else "imagenet"))
         source_names.append(name)
     if not sources:
         raise ValueError("Provide --sop-root, --abo-root, --fashion-root, or --source")
@@ -110,10 +112,15 @@ def train(args):
         items.labels, items.cameras, args.batch_size, instances_per_id,
         getattr(args, "steps_per_epoch", None), items.sample_sources, source_names,
         getattr(args, "source_batch_weights", None)), num_workers=args.workers)
-    masks = None if args.reid_only else ForegroundVOC(args.voc_root, "train", args.download_voc, args.augmentation)
+    mask_manifest = getattr(args, "mask_manifest", None)
+    masks = (None if args.reid_only else
+             VehicleMaskCrops(Path(mask_manifest), args.augmentation) if mask_manifest else
+             ForegroundVOC(args.voc_root, "train", args.download_voc, args.augmentation))
     mask_loader = (None if masks is None else DataLoader(
-        masks, batch_size=args.batch_size, shuffle=True, num_workers=args.workers))
-    model = JointNet(pretrained=args.resume is None, use_mask_pool=not args.reid_only)
+        masks, batch_size=args.batch_size, shuffle=True, num_workers=args.workers,
+        generator=torch.Generator().manual_seed(args.seed + 100_003)))
+    model = JointNet(pretrained=args.resume is None, use_mask_pool=not args.reid_only,
+                     mask_classes=getattr(args, "mask_classes", 21))
     model.compute_mask = not args.reid_only
     if args.resume:
         saved = torch.load(args.resume, map_location="cpu", weights_only=True)
@@ -126,6 +133,9 @@ def train(args):
             parameter.requires_grad_(False)
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate)
     classifier = nn.Linear(EMBEDDING_SIZE, len(set(items.labels))).to(device)
+    if getattr(args, "resume_classifier", None) is not None:
+        prior = torch.load(args.resume_classifier, map_location="cpu", weights_only=True)
+        classifier.load_state_dict(prior["classifier"])
     identity_optimizer = torch.optim.AdamW(classifier.parameters(), lr=args.learning_rate * 10)
     model_schedule = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.epochs, eta_min=args.learning_rate * 0.1)
@@ -192,7 +202,16 @@ def train(args):
                                   selection_score=best_score, instances_per_id=instances_per_id)
     if start_epoch >= args.epochs:
         raise ValueError(f"Saved epoch {start_epoch} has reached configured {args.epochs} epochs")
+    mask_pool_start_epoch = getattr(args, "mask_pool_start_epoch", None)
+    if mask_pool_start_epoch is not None and not 1 <= mask_pool_start_epoch <= args.epochs:
+        raise ValueError("mask_pool_start_epoch must be between 1 and epochs")
     for epoch in range(start_epoch + 1, args.epochs + 1):
+        # Let an untrained binary mask head learn on the first epoch before its
+        # foreground weights guide the ReID embedding.
+        model.use_mask_pool = not args.reid_only and (
+            mask_pool_start_epoch is None or epoch >= mask_pool_start_epoch)
+        if mask_pool_start_epoch is not None:
+            print(f"Epoch {epoch}: {'mask-guided' if model.use_mask_pool else 'global'} pooling", flush=True)
         model.train()
         mask_iterator = iter(mask_loader) if mask_loader is not None else None
         reid_total = mask_total = 0.0
@@ -215,11 +234,18 @@ def train(args):
             reid_total += reid_loss.item()
 
             if mask_loader is not None and step % mask_every == 0:
+                # Mask augmentation must not perturb the identity sampler or
+                # identity crop augmentation in the matched comparison.
+                python_rng, torch_rng = random.getstate(), torch.get_rng_state()
                 try:
-                    mask_images, target_masks = next(mask_iterator)
-                except StopIteration:
-                    mask_iterator = iter(mask_loader)
-                    mask_images, target_masks = next(mask_iterator)
+                    try:
+                        mask_images, target_masks = next(mask_iterator)
+                    except StopIteration:
+                        mask_iterator = iter(mask_loader)
+                        mask_images, target_masks = next(mask_iterator)
+                finally:
+                    random.setstate(python_rng)
+                    torch.set_rng_state(torch_rng)
                 logits, _ = model(mask_images.to(device))
                 segmentation_loss = mask_loss(logits, target_masks.to(device))
                 combined_loss = combined_loss + mask_loss_weight * segmentation_loss

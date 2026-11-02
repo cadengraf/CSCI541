@@ -58,10 +58,12 @@ def _load_joint(path, global_pool=False):
         raise FileNotFoundError(f"Missing benchmark checkpoint: {path}")
     saved = torch.load(path, map_location="cpu", weights_only=True)
     trained_mask = saved.get("segmentation_trained", False)
-    model = JointNet(pretrained=False, use_mask_pool=trained_mask and not global_pool)
+    model = JointNet(pretrained=False, use_mask_pool=trained_mask and not global_pool,
+                     mask_classes=saved.get("mask_classes", 21))
     model.load_state_dict(saved["model"])
     model.compute_mask = trained_mask
     model.segmentation_trained = trained_mask
+    model.preprocessing = saved.get("preprocessing", "imagenet_center_crop")
     return model
 
 
@@ -128,12 +130,12 @@ def _combine_pair_metrics(metrics):
 
 
 @torch.inference_mode()
-def _cpu_latency(model):
+def _cpu_latency(model, image_size=224):
     model.to("cpu").eval()
     previous_threads = torch.get_num_threads()
     torch.set_num_threads(1)
     try:
-        sample = torch.randn(1, 3, 224, 224)
+        sample = torch.randn(1, 3, image_size, image_size)
         for _ in range(5):
             model(sample)
         timings = []

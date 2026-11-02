@@ -1,0 +1,5 @@
+dataset,metric,comparison_model,threshold_percent,current_joint_percent,next_joint_percent,protocol
+VRU local test,Rank-1,Vehicle warm-start ReID only,62.42,56.60,,fixed local single-gallery split; mAP equals mean reciprocal rank
+VRU local test,mAP,Vehicle warm-start ReID only,73.06,67.64,,fixed local single-gallery split; mAP equals mean reciprocal rank
+VRAI local cross-camera,Rank-1,Vehicle warm-start ReID only,58.30,57.07,,identity-disjoint split of official training images
+VRAI local cross-camera,mAP,Vehicle warm-start ReID only,55.76,54.16,,identity-disjoint split of official training images

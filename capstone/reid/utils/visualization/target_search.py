@@ -116,7 +116,8 @@ def run(config, val_root):
     if not checkpoint.get("use_mask_pool", True):
         raise ValueError("Select a joint checkpoint trained with mask-guided pooling")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = JointNet(pretrained=False, use_mask_pool=True).to(device)
+    model = JointNet(pretrained=False, use_mask_pool=True,
+                     mask_classes=checkpoint.get("mask_classes", 21)).to(device)
     model.load_state_dict(checkpoint["model"])
     model.eval()
     with torch.inference_mode():

@@ -17,17 +17,21 @@ from utils.benchmarking.models import _load_joint
 from utils.core.identity_data import NORMALIZE
 
 
-def _image_and_mask(image_path: Path, mask_path: Path):
+def _image_and_mask(image_path: Path, mask_path: Path, full_resize: bool = False):
     settings = ShuffleNet_V2_X1_5_Weights.DEFAULT.transforms()
     with Image.open(image_path) as source, Image.open(mask_path) as annotation:
         image = source.convert("RGB")
         mask = annotation.convert("L")
         if image.size != mask.size:
             raise ValueError(f"Mask size {mask.size} differs from image size {image.size}: {mask_path}")
-        image = TF.resize(image, settings.resize_size, interpolation=InterpolationMode.BILINEAR)
-        mask = TF.resize(mask, settings.resize_size, interpolation=InterpolationMode.NEAREST)
-        image = TF.center_crop(image, settings.crop_size)
-        mask = TF.center_crop(mask, settings.crop_size)
+        if full_resize:
+            image = TF.resize(image, (224, 224), interpolation=InterpolationMode.BILINEAR)
+            mask = TF.resize(mask, (224, 224), interpolation=InterpolationMode.NEAREST)
+        else:
+            image = TF.resize(image, settings.resize_size, interpolation=InterpolationMode.BILINEAR)
+            mask = TF.resize(mask, settings.resize_size, interpolation=InterpolationMode.NEAREST)
+            image = TF.center_crop(image, settings.crop_size)
+            mask = TF.center_crop(mask, settings.crop_size)
         return NORMALIZE(TF.to_tensor(image)), TF.pil_to_tensor(mask)[0] > 0
 
 
@@ -62,7 +66,8 @@ def main():
         for row in rows:
             image_path = (manifest.parent / row["image"]).resolve()
             mask_path = (manifest.parent / row["mask"]).resolve()
-            image, truth = _image_and_mask(image_path, mask_path)
+            image, truth = _image_and_mask(
+                image_path, mask_path, full_resize=model.preprocessing == "vehicle_full_resize")
             with torch.inference_mode():
                 logits, _ = model(image[None].to(device))
                 foreground = 1 - logits.softmax(1)[:, :1]

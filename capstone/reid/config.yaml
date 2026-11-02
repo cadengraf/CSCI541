@@ -155,6 +155,9 @@ benchmark:
 # same size as its crop: white object, black background. No data is invented.
 aerial_mask_eval:
   checkpoints:
+    Joint aerial validated: checkpoints/joint_aerial_validated.pt
+    Vehicle joint binary mask: checkpoints/vehicle_controlled/joint.pt
+    Vehicle warm-start joint: checkpoints/vehicle_warmstart/joint.pt
     Joint aerial expanded: checkpoints/joint_aerial_expanded.pt
     Joint balanced: checkpoints/joint_balanced.pt
     Joint multiview: checkpoints/joint_multiview.pt
@@ -167,10 +170,49 @@ vrai:
   root: data/aerial/vrai
   train_manifest: data/aerial/vrai/train.csv
   split_seed: 42
+  vehicle_benchmark:
+    train_manifest: data/aerial/vrai/train_disjoint.csv
+    query_manifest: data/aerial/vrai/query.csv
+    gallery_manifest: data/aerial/vrai/gallery.csv
+    reid_only_checkpoint: checkpoints/vehicle_controlled/reid_only.pt
+    joint_checkpoint: checkpoints/vehicle_controlled/joint.pt
+    warmstart_reid_only_checkpoint: checkpoints/vehicle_warmstart/reid_only.pt
+    warmstart_joint_checkpoint: checkpoints/vehicle_warmstart/joint.pt
+    output: metrics/vrai_local_benchmark.csv
+    batch_size: 64
+    workers: 0
 
 vru:
   root: data/aerial/vru/source
   train_manifest: data/aerial/vru/train.csv
+  query_manifest: data/aerial/vru/query.csv
+  gallery_manifest: data/aerial/vru/gallery.csv
+  gallery_seed: 42          # fixed local gallery choice; one image per test identity
+  output: metrics/vru_benchmark.csv
+  checkpoints:
+    Joint aerial validated: checkpoints/joint_aerial_validated.pt
+    Joint balanced: checkpoints/joint_balanced.pt
+  matched_checkpoints:
+    Vehicle ReID only: checkpoints/vehicle_controlled/reid_only.pt
+    Vehicle joint binary mask: checkpoints/vehicle_controlled/joint.pt
+  warmstart_checkpoints:
+    Vehicle warm-start ReID only: checkpoints/vehicle_warmstart/reid_only.pt
+    Vehicle warm-start joint: checkpoints/vehicle_warmstart/joint.pt
+  global_pool_ablation:
+    - Joint aerial validated
+    - Vehicle joint binary mask
+    - Vehicle warm-start joint
+  msinet:
+    enabled: true
+    repo: data/aerial/vru/baselines/Benchmarking-ReID
+    checkpoint: data/aerial/vru/baselines/msinet_vru_clean.pth
+  external_features: {}    # optional baseline .pt files on the exact manifests
+  batch_size: 64
+  workers: 0
+  mask_video_checkpoint: auto   # newest finished vehicle joint, then earlier checkpoints
+  mask_video_output: data/aerial/vru/mask_diagnostic.mp4
+  mask_video_examples: 24
+  mask_eval_manifest: data/aerial/masks/eval.csv
 
 # Both arms start with identical weights and see the same identity data, seed,
 # ReID batch size, learning rate, augmentations, and number of ReID updates.
@@ -181,6 +223,57 @@ comparison:
   output_dir: checkpoints/controlled
   epochs: 12
   steps_per_epoch: 1000
+
+# `python prepare.py vehicle-masks` downloads only selected DOTA train scenes,
+# verifies their vehicle boxes against iSAID, then saves object crops/masks.
+vehicle_masks:
+  annotation: data/aerial/isaid/train/Annotations/iSAID_train.json
+  output_dir: data/aerial/vehicle_masks
+  scenes: 200
+  per_scene: 16
+  min_side: 16
+  seed: 42
+
+# `python train.py compare-vehicles` starts both arms from the same ImageNet
+# ShuffleNetV2 weights and random head initialization. VRU test is excluded.
+vehicle_comparison:
+  train_manifest: data/aerial/vru/train.csv
+  mask_manifest: data/aerial/vehicle_masks/train.csv
+  output_dir: checkpoints/vehicle_controlled
+  epochs: 12
+  steps_per_epoch: 1000
+  mask_classes: 2
+  batch_size: 64
+  instances_per_id: 4
+  learning_rate: 0.0002
+  augmentation: strong
+  mask_every: 2
+  mask_loss_weight: 1.0
+  workers: 0
+  seed: 42
+  triplet_margin: 0.2
+  triplet_weight: 1.0
+
+# Continue the finished VRU ReID-only model in two matched arms. The joint arm
+# learns masks with global pooling for epoch 1, then uses its trained mask.
+vehicle_warmstart:
+  start_checkpoint: checkpoints/vehicle_controlled/reid_only.pt
+  train_manifest: data/aerial/vru/train.csv
+  mask_manifest: data/aerial/vehicle_masks/train.csv
+  output_dir: checkpoints/vehicle_warmstart
+  epochs: 4
+  steps_per_epoch: 1000
+  mask_pool_start_epoch: 2
+  batch_size: 64
+  instances_per_id: 4
+  learning_rate: 0.00002
+  augmentation: strong
+  mask_every: 2
+  mask_loss_weight: 0.2
+  workers: 0
+  seed: 42
+  triplet_margin: 0.2
+  triplet_weight: 1.0
 
 # `python prepare.py visdrone` downloads missing official archives, extracts, then evaluates.
 # `python train.py visdrone` is the older crop-only ReID experiment.

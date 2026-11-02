@@ -17,7 +17,8 @@ def evaluate(args):
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
     use_mask_pool = (False if getattr(args, "global_pool", False)
                      else checkpoint.get("use_mask_pool", True))
-    model = JointNet(pretrained=False, use_mask_pool=use_mask_pool)
+    model = JointNet(pretrained=False, use_mask_pool=use_mask_pool,
+                     mask_classes=checkpoint.get("mask_classes", 21))
     model.load_state_dict(checkpoint["model"])
     model.to(device).eval()
     holdout = getattr(args, "selection", None) is not None

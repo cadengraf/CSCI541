@@ -1,0 +1,3 @@
+# PC environment only. Keep the installed CUDA PyTorch stack.
+yacs==0.1.8
+gdown==5.2.0

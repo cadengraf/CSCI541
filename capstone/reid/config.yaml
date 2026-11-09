@@ -324,3 +324,33 @@ select:
   fps: 6
   min_box: 16
   target_id: 14
+# First full-frame model: KITTI MOTS cars supply boxes, masks, and within-video IDs.
+# Run `python prepare.py kitti` after placing both ZIPs in data/kitti_mots/archives/.
+# `python train.py full-frame-smoke` tests the model without any dataset.
+# `python train.py full-frame` trains it and resumes from the checkpoint by epoch.
+full_frame:
+  architecture: resnet50_fpn_v2  # proven COCO Mask R-CNN baseline; shufflenet_fpn is the later size experiment
+  data_root: data/kitti_mots
+  images_archive: data/kitti_mots/archives/data_tracking_image_2.zip
+  labels_archive: data/kitti_mots/archives/instances_txt.zip
+  train_sequences: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  val_sequences: [16, 17, 18, 19, 20]
+  image_size: 640
+  pretrained: true
+  batch_pairs: 1
+  epochs: 8
+  eval_pairs: null  # all held-out KITTI frame pairs; set a number for a quick diagnostic
+  max_pairs: null
+  learning_rate: 0.0001
+  workers: 0
+  seed: 42
+  checkpoint: checkpoints/full_frame_resnet50_kitti.pt
+  multiview:
+    checkpoint: checkpoints/full_frame_resnet50_kitti_vrai.pt
+    crop_image_size: 320
+    identities_per_batch: 4  # two camera views per ID, all vehicles are hard same-class negatives
+    kitti_steps_per_vrai_step: 2
+    vrai_loss_weight: 1.0
+    learning_rate: 0.00002
+    epochs: 6
+    save_every_steps: 250  # resume inside an epoch after a dropped SSH session

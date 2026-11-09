@@ -9,9 +9,30 @@ from utils.benchmarking.benchmark import run
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", nargs="?", choices=("masks", "vru", "vru-masks", "vrai", "metrics"),
+    parser.add_argument("mode", nargs="?", choices=("masks", "vru", "vru-masks", "vrai", "metrics", "kitti-mots", "kitti-mots-check", "kitti-mots-score", "teacher", "trackers", "trackers-check", "trackers-setup", "reid-teacher", "reid-teacher-final", "reid-teacher-setup"),
                         help="evaluate masks, VRU/VRAI retrieval, or refresh metrics HTML")
     mode = parser.parse_args().mode
+    if mode == "reid-teacher-setup":
+        from utils.reid_teacher.setup import run as setup
+        return setup()
+    if mode in ("reid-teacher", "reid-teacher-final"):
+        from utils.reid_teacher.evaluation import run as specialist
+        return specialist(final=mode.endswith('-final'))
+    if mode == "trackers-setup":
+        from utils.tracking.setup import run as setup
+        return setup()
+    if mode in ("trackers", "trackers-check"):
+        from utils.teacher.launcher import launch
+        from utils.tracking.comparison import run as compare
+        check = mode.endswith('-check')
+        launch('tracking-cache-check' if check else 'tracking-cache')
+        return compare(check=check)
+    if mode == "teacher":
+        from utils.teacher.launcher import launch
+        return launch("eval")
+    if mode in ("kitti-mots", "kitti-mots-score", "kitti-mots-check"):
+        from utils.full_frame.mots_benchmark import check, run as run_mots
+        return check() if mode == "kitti-mots-check" else run_mots(score_only=mode.endswith('-score'))
     if mode == "metrics":
         from utils.benchmarking.scorecard import render
         return render()

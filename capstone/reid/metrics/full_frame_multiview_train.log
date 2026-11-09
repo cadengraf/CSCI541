@@ -1,0 +1,631 @@
+KITTI: 4328 frame pairs / 440 IDs; VRAI: 5042 two-camera training IDs; device=cuda
+Epoch 1/6 KITTI 50/4328 loss=0.887 VRAI loss=9.020
+Epoch 1/6 KITTI 100/4328 loss=5.073 VRAI loss=9.053
+Epoch 1/6 KITTI 150/4328 loss=3.189 VRAI loss=8.920
+Epoch 1/6 KITTI 200/4328 loss=4.447 VRAI loss=8.934
+Epoch 1/6 KITTI 250/4328 loss=1.250 VRAI loss=8.740
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 250)
+Epoch 1/6 KITTI 300/4328 loss=3.790 VRAI loss=8.705
+Epoch 1/6 KITTI 350/4328 loss=5.353 VRAI loss=8.780
+Epoch 1/6 KITTI 400/4328 loss=2.542 VRAI loss=8.719
+Epoch 1/6 KITTI 450/4328 loss=5.131 VRAI loss=8.828
+Epoch 1/6 KITTI 500/4328 loss=5.222 VRAI loss=8.826
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 500)
+Epoch 1/6 KITTI 550/4328 loss=4.336 VRAI loss=8.913
+Epoch 1/6 KITTI 600/4328 loss=3.235 VRAI loss=8.687
+Epoch 1/6 KITTI 650/4328 loss=4.299 VRAI loss=8.796
+Epoch 1/6 KITTI 700/4328 loss=5.240 VRAI loss=8.695
+Epoch 1/6 KITTI 750/4328 loss=1.174 VRAI loss=8.742
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 750)
+Epoch 1/6 KITTI 800/4328 loss=0.821 VRAI loss=8.626
+Epoch 1/6 KITTI 850/4328 loss=2.521 VRAI loss=8.676
+Epoch 1/6 KITTI 900/4328 loss=0.677 VRAI loss=8.692
+Epoch 1/6 KITTI 950/4328 loss=5.292 VRAI loss=8.653
+Epoch 1/6 KITTI 1000/4328 loss=3.179 VRAI loss=8.698
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 1000)
+Epoch 1/6 KITTI 1050/4328 loss=3.140 VRAI loss=8.647
+Epoch 1/6 KITTI 1100/4328 loss=6.155 VRAI loss=8.687
+Epoch 1/6 KITTI 1150/4328 loss=4.164 VRAI loss=8.568
+Epoch 1/6 KITTI 1200/4328 loss=2.884 VRAI loss=8.722
+Epoch 1/6 KITTI 1250/4328 loss=4.647 VRAI loss=8.617
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 1250)
+Epoch 1/6 KITTI 1300/4328 loss=4.627 VRAI loss=8.852
+Epoch 1/6 KITTI 1350/4328 loss=3.297 VRAI loss=8.771
+Epoch 1/6 KITTI 1400/4328 loss=4.994 VRAI loss=8.703
+Epoch 1/6 KITTI 1450/4328 loss=3.885 VRAI loss=8.650
+Epoch 1/6 KITTI 1500/4328 loss=3.087 VRAI loss=8.690
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 1500)
+Epoch 1/6 KITTI 1550/4328 loss=4.814 VRAI loss=8.587
+Epoch 1/6 KITTI 1600/4328 loss=5.749 VRAI loss=8.638
+Epoch 1/6 KITTI 1650/4328 loss=3.915 VRAI loss=8.532
+Epoch 1/6 KITTI 1700/4328 loss=5.419 VRAI loss=8.605
+Epoch 1/6 KITTI 1750/4328 loss=4.858 VRAI loss=8.578
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 1750)
+Epoch 1/6 KITTI 1800/4328 loss=4.136 VRAI loss=8.815
+Epoch 1/6 KITTI 1850/4328 loss=3.513 VRAI loss=8.800
+Epoch 1/6 KITTI 1900/4328 loss=5.976 VRAI loss=8.601
+Epoch 1/6 KITTI 1950/4328 loss=6.048 VRAI loss=8.713
+Epoch 1/6 KITTI 2000/4328 loss=0.728 VRAI loss=8.620
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 2000)
+Epoch 1/6 KITTI 2050/4328 loss=3.015 VRAI loss=8.711
+Epoch 1/6 KITTI 2100/4328 loss=5.014 VRAI loss=8.606
+Epoch 1/6 KITTI 2150/4328 loss=5.497 VRAI loss=8.592
+Epoch 1/6 KITTI 2200/4328 loss=0.730 VRAI loss=8.686
+Epoch 1/6 KITTI 2250/4328 loss=2.547 VRAI loss=8.616
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 2250)
+Epoch 1/6 KITTI 2300/4328 loss=1.350 VRAI loss=8.629
+Epoch 1/6 KITTI 2350/4328 loss=5.935 VRAI loss=8.790
+Epoch 1/6 KITTI 2400/4328 loss=4.309 VRAI loss=8.701
+Epoch 1/6 KITTI 2450/4328 loss=4.042 VRAI loss=8.757
+Epoch 1/6 KITTI 2500/4328 loss=3.855 VRAI loss=8.725
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 2500)
+Epoch 1/6 KITTI 2550/4328 loss=5.304 VRAI loss=8.629
+Epoch 1/6 KITTI 2600/4328 loss=2.382 VRAI loss=8.558
+Epoch 1/6 KITTI 2650/4328 loss=6.096 VRAI loss=8.604
+Epoch 1/6 KITTI 2700/4328 loss=0.741 VRAI loss=8.602
+Epoch 1/6 KITTI 2750/4328 loss=0.594 VRAI loss=8.600
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 2750)
+Epoch 1/6 KITTI 2800/4328 loss=6.261 VRAI loss=8.777
+Epoch 1/6 KITTI 2850/4328 loss=5.865 VRAI loss=8.654
+Epoch 1/6 KITTI 2900/4328 loss=4.814 VRAI loss=8.546
+Epoch 1/6 KITTI 2950/4328 loss=3.597 VRAI loss=8.691
+Epoch 1/6 KITTI 3000/4328 loss=3.092 VRAI loss=8.787
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 3000)
+Epoch 1/6 KITTI 3050/4328 loss=3.058 VRAI loss=8.570
+Epoch 1/6 KITTI 3100/4328 loss=3.889 VRAI loss=8.593
+Epoch 1/6 KITTI 3150/4328 loss=2.579 VRAI loss=8.503
+Epoch 1/6 KITTI 3200/4328 loss=6.268 VRAI loss=8.665
+Epoch 1/6 KITTI 3250/4328 loss=4.414 VRAI loss=8.613
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 3250)
+Epoch 1/6 KITTI 3300/4328 loss=0.733 VRAI loss=8.566
+Epoch 1/6 KITTI 3350/4328 loss=5.105 VRAI loss=8.549
+Epoch 1/6 KITTI 3400/4328 loss=4.075 VRAI loss=8.561
+Epoch 1/6 KITTI 3450/4328 loss=0.710 VRAI loss=8.583
+Epoch 1/6 KITTI 3500/4328 loss=5.437 VRAI loss=8.909
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 3500)
+Epoch 1/6 KITTI 3550/4328 loss=4.707 VRAI loss=8.485
+Epoch 1/6 KITTI 3600/4328 loss=3.540 VRAI loss=8.841
+Epoch 1/6 KITTI 3650/4328 loss=4.308 VRAI loss=8.654
+Epoch 1/6 KITTI 3700/4328 loss=3.516 VRAI loss=8.852
+Epoch 1/6 KITTI 3750/4328 loss=1.002 VRAI loss=8.705
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 3750)
+Epoch 1/6 KITTI 3800/4328 loss=5.003 VRAI loss=8.556
+Epoch 1/6 KITTI 3850/4328 loss=4.854 VRAI loss=8.791
+Epoch 1/6 KITTI 3900/4328 loss=5.406 VRAI loss=8.507
+Epoch 1/6 KITTI 3950/4328 loss=2.418 VRAI loss=8.579
+Epoch 1/6 KITTI 4000/4328 loss=5.412 VRAI loss=8.591
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 4000)
+Epoch 1/6 KITTI 4050/4328 loss=5.368 VRAI loss=8.970
+Epoch 1/6 KITTI 4100/4328 loss=5.303 VRAI loss=8.637
+Epoch 1/6 KITTI 4150/4328 loss=5.036 VRAI loss=8.598
+Epoch 1/6 KITTI 4200/4328 loss=4.317 VRAI loss=8.592
+Epoch 1/6 KITTI 4250/4328 loss=2.352 VRAI loss=8.648
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 0, current step 4250)
+Epoch 1/6 KITTI 4300/4328 loss=5.045 VRAI loss=8.671
+Epoch 1/6 KITTI 4328/4328 loss=6.352 VRAI loss=8.572
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 0)
+Epoch 2/6 KITTI 50/4328 loss=1.808 VRAI loss=8.658
+Epoch 2/6 KITTI 100/4328 loss=4.761 VRAI loss=8.631
+Epoch 2/6 KITTI 150/4328 loss=1.890 VRAI loss=8.869
+Epoch 2/6 KITTI 200/4328 loss=4.718 VRAI loss=8.862
+Epoch 2/6 KITTI 250/4328 loss=3.099 VRAI loss=8.743
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 250)
+Epoch 2/6 KITTI 300/4328 loss=4.047 VRAI loss=8.515
+Epoch 2/6 KITTI 350/4328 loss=5.266 VRAI loss=8.716
+Epoch 2/6 KITTI 400/4328 loss=4.545 VRAI loss=8.706
+Epoch 2/6 KITTI 450/4328 loss=0.618 VRAI loss=8.554
+Epoch 2/6 KITTI 500/4328 loss=3.099 VRAI loss=8.554
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 500)
+Epoch 2/6 KITTI 550/4328 loss=5.116 VRAI loss=8.765
+Epoch 2/6 KITTI 600/4328 loss=2.579 VRAI loss=8.541
+Epoch 2/6 KITTI 650/4328 loss=6.170 VRAI loss=8.601
+Epoch 2/6 KITTI 700/4328 loss=4.770 VRAI loss=8.636
+Epoch 2/6 KITTI 750/4328 loss=0.755 VRAI loss=8.644
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 750)
+Epoch 2/6 KITTI 800/4328 loss=2.357 VRAI loss=8.616
+Epoch 2/6 KITTI 850/4328 loss=4.961 VRAI loss=8.654
+Epoch 2/6 KITTI 900/4328 loss=5.219 VRAI loss=8.725
+Epoch 2/6 KITTI 950/4328 loss=4.971 VRAI loss=8.607
+Epoch 2/6 KITTI 1000/4328 loss=0.657 VRAI loss=8.612
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 1000)
+Epoch 2/6 KITTI 1050/4328 loss=0.646 VRAI loss=8.638
+Epoch 2/6 KITTI 1100/4328 loss=0.513 VRAI loss=8.614
+Epoch 2/6 KITTI 1150/4328 loss=5.347 VRAI loss=8.832
+Epoch 2/6 KITTI 1200/4328 loss=4.614 VRAI loss=8.495
+Epoch 2/6 KITTI 1250/4328 loss=4.154 VRAI loss=8.650
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 1250)
+Epoch 2/6 KITTI 1300/4328 loss=0.631 VRAI loss=8.753
+Epoch 2/6 KITTI 1350/4328 loss=4.654 VRAI loss=8.589
+Epoch 2/6 KITTI 1400/4328 loss=4.715 VRAI loss=8.848
+Epoch 2/6 KITTI 1450/4328 loss=4.307 VRAI loss=8.769
+Epoch 2/6 KITTI 1500/4328 loss=0.915 VRAI loss=8.533
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 1500)
+Epoch 2/6 KITTI 1550/4328 loss=3.625 VRAI loss=8.601
+Epoch 2/6 KITTI 1600/4328 loss=0.566 VRAI loss=8.585
+Epoch 2/6 KITTI 1650/4328 loss=4.119 VRAI loss=8.558
+Epoch 2/6 KITTI 1700/4328 loss=4.174 VRAI loss=8.511
+Epoch 2/6 KITTI 1750/4328 loss=4.821 VRAI loss=8.530
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 1750)
+Epoch 2/6 KITTI 1800/4328 loss=3.186 VRAI loss=8.583
+Epoch 2/6 KITTI 1850/4328 loss=3.024 VRAI loss=8.830
+Epoch 2/6 KITTI 1900/4328 loss=5.188 VRAI loss=8.725
+Epoch 2/6 KITTI 1950/4328 loss=5.739 VRAI loss=8.684
+Epoch 2/6 KITTI 2000/4328 loss=4.615 VRAI loss=8.575
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 2000)
+Epoch 2/6 KITTI 2050/4328 loss=1.885 VRAI loss=8.633
+Epoch 2/6 KITTI 2100/4328 loss=2.471 VRAI loss=8.654
+Epoch 2/6 KITTI 2150/4328 loss=4.438 VRAI loss=8.687
+Epoch 2/6 KITTI 2200/4328 loss=4.587 VRAI loss=8.580
+Epoch 2/6 KITTI 2250/4328 loss=3.973 VRAI loss=8.622
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 2250)
+Epoch 2/6 KITTI 2300/4328 loss=0.597 VRAI loss=8.593
+Epoch 2/6 KITTI 2350/4328 loss=5.257 VRAI loss=8.660
+Epoch 2/6 KITTI 2400/4328 loss=2.479 VRAI loss=8.789
+Epoch 2/6 KITTI 2450/4328 loss=0.889 VRAI loss=8.631
+Epoch 2/6 KITTI 2500/4328 loss=5.733 VRAI loss=8.622
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 2500)
+Epoch 2/6 KITTI 2550/4328 loss=3.487 VRAI loss=8.530
+Epoch 2/6 KITTI 2600/4328 loss=4.899 VRAI loss=8.569
+Epoch 2/6 KITTI 2650/4328 loss=4.307 VRAI loss=8.509
+Epoch 2/6 KITTI 2700/4328 loss=0.499 VRAI loss=8.650
+Epoch 2/6 KITTI 2750/4328 loss=5.120 VRAI loss=8.743
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 2750)
+Epoch 2/6 KITTI 2800/4328 loss=4.459 VRAI loss=8.852
+Epoch 2/6 KITTI 2850/4328 loss=2.751 VRAI loss=8.776
+Epoch 2/6 KITTI 2900/4328 loss=2.315 VRAI loss=8.653
+Epoch 2/6 KITTI 2950/4328 loss=4.511 VRAI loss=8.702
+Epoch 2/6 KITTI 3000/4328 loss=0.870 VRAI loss=8.541
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 3000)
+Epoch 2/6 KITTI 3050/4328 loss=4.983 VRAI loss=8.442
+Epoch 2/6 KITTI 3100/4328 loss=4.102 VRAI loss=8.575
+Epoch 2/6 KITTI 3150/4328 loss=3.868 VRAI loss=8.943
+Epoch 2/6 KITTI 3200/4328 loss=0.485 VRAI loss=8.671
+Epoch 2/6 KITTI 3250/4328 loss=4.853 VRAI loss=8.649
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 3250)
+Epoch 2/6 KITTI 3300/4328 loss=3.280 VRAI loss=8.630
+Epoch 2/6 KITTI 3350/4328 loss=0.872 VRAI loss=8.653
+Epoch 2/6 KITTI 3400/4328 loss=6.814 VRAI loss=8.644
+Epoch 2/6 KITTI 3450/4328 loss=2.169 VRAI loss=8.574
+Epoch 2/6 KITTI 3500/4328 loss=4.345 VRAI loss=8.511
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 3500)
+Epoch 2/6 KITTI 3550/4328 loss=3.181 VRAI loss=8.541
+Epoch 2/6 KITTI 3600/4328 loss=3.261 VRAI loss=8.588
+Epoch 2/6 KITTI 3650/4328 loss=0.562 VRAI loss=8.586
+Epoch 2/6 KITTI 3700/4328 loss=5.360 VRAI loss=8.531
+Epoch 2/6 KITTI 3750/4328 loss=4.736 VRAI loss=8.618
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 3750)
+Epoch 2/6 KITTI 3800/4328 loss=4.122 VRAI loss=8.511
+Epoch 2/6 KITTI 3850/4328 loss=4.177 VRAI loss=8.674
+Epoch 2/6 KITTI 3900/4328 loss=2.294 VRAI loss=8.569
+Epoch 2/6 KITTI 3950/4328 loss=1.075 VRAI loss=8.718
+Epoch 2/6 KITTI 4000/4328 loss=0.573 VRAI loss=8.600
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 4000)
+Epoch 2/6 KITTI 4050/4328 loss=4.488 VRAI loss=8.567
+Epoch 2/6 KITTI 4100/4328 loss=5.265 VRAI loss=8.545
+Epoch 2/6 KITTI 4150/4328 loss=5.725 VRAI loss=8.533
+Epoch 2/6 KITTI 4200/4328 loss=5.146 VRAI loss=8.540
+Epoch 2/6 KITTI 4250/4328 loss=3.446 VRAI loss=8.614
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 1, current step 4250)
+Epoch 2/6 KITTI 4300/4328 loss=0.543 VRAI loss=8.666
+Epoch 2/6 KITTI 4328/4328 loss=4.113 VRAI loss=8.682
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 0)
+Epoch 3/6 KITTI 50/4328 loss=4.230 VRAI loss=8.631
+Epoch 3/6 KITTI 100/4328 loss=2.861 VRAI loss=8.487
+Epoch 3/6 KITTI 150/4328 loss=4.261 VRAI loss=8.733
+Epoch 3/6 KITTI 200/4328 loss=4.526 VRAI loss=8.744
+Epoch 3/6 KITTI 250/4328 loss=4.844 VRAI loss=8.526
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 250)
+Epoch 3/6 KITTI 300/4328 loss=4.876 VRAI loss=8.729
+Epoch 3/6 KITTI 350/4328 loss=0.526 VRAI loss=8.697
+Epoch 3/6 KITTI 400/4328 loss=4.233 VRAI loss=8.672
+Epoch 3/6 KITTI 450/4328 loss=5.051 VRAI loss=8.552
+Epoch 3/6 KITTI 500/4328 loss=4.844 VRAI loss=8.793
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 500)
+Epoch 3/6 KITTI 550/4328 loss=5.087 VRAI loss=8.539
+Epoch 3/6 KITTI 600/4328 loss=5.667 VRAI loss=8.754
+Epoch 3/6 KITTI 650/4328 loss=3.887 VRAI loss=8.513
+Epoch 3/6 KITTI 700/4328 loss=4.125 VRAI loss=8.563
+Epoch 3/6 KITTI 750/4328 loss=0.431 VRAI loss=8.619
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 750)
+Epoch 3/6 KITTI 800/4328 loss=4.444 VRAI loss=8.632
+Epoch 3/6 KITTI 850/4328 loss=2.931 VRAI loss=8.572
+Epoch 3/6 KITTI 900/4328 loss=3.950 VRAI loss=8.765
+Epoch 3/6 KITTI 950/4328 loss=5.497 VRAI loss=8.706
+Epoch 3/6 KITTI 1000/4328 loss=5.358 VRAI loss=8.550
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 1000)
+Epoch 3/6 KITTI 1050/4328 loss=5.184 VRAI loss=8.544
+Epoch 3/6 KITTI 1100/4328 loss=4.382 VRAI loss=8.681
+Epoch 3/6 KITTI 1150/4328 loss=5.199 VRAI loss=8.560
+Epoch 3/6 KITTI 1200/4328 loss=6.165 VRAI loss=8.610
+Epoch 3/6 KITTI 1250/4328 loss=4.764 VRAI loss=8.679
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 1250)
+Epoch 3/6 KITTI 1300/4328 loss=5.185 VRAI loss=8.505
+Epoch 3/6 KITTI 1350/4328 loss=0.787 VRAI loss=8.733
+Epoch 3/6 KITTI 1400/4328 loss=0.509 VRAI loss=8.741
+Epoch 3/6 KITTI 1450/4328 loss=4.503 VRAI loss=8.573
+Epoch 3/6 KITTI 1500/4328 loss=2.014 VRAI loss=8.544
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 1500)
+Epoch 3/6 KITTI 1550/4328 loss=3.198 VRAI loss=8.563
+Epoch 3/6 KITTI 1600/4328 loss=4.964 VRAI loss=8.627
+Epoch 3/6 KITTI 1650/4328 loss=5.019 VRAI loss=8.525
+Epoch 3/6 KITTI 1700/4328 loss=4.149 VRAI loss=8.698
+Epoch 3/6 KITTI 1750/4328 loss=2.877 VRAI loss=8.573
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 1750)
+Epoch 3/6 KITTI 1800/4328 loss=5.219 VRAI loss=8.634
+Epoch 3/6 KITTI 1850/4328 loss=5.043 VRAI loss=8.572
+Epoch 3/6 KITTI 1900/4328 loss=6.333 VRAI loss=8.512
+Epoch 3/6 KITTI 1950/4328 loss=6.923 VRAI loss=8.570
+Epoch 3/6 KITTI 2000/4328 loss=5.655 VRAI loss=8.627
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 2000)
+Epoch 3/6 KITTI 2050/4328 loss=5.920 VRAI loss=8.693
+Epoch 3/6 KITTI 2100/4328 loss=5.123 VRAI loss=8.544
+Epoch 3/6 KITTI 2150/4328 loss=2.968 VRAI loss=8.607
+Epoch 3/6 KITTI 2200/4328 loss=5.204 VRAI loss=8.712
+Epoch 3/6 KITTI 2250/4328 loss=5.740 VRAI loss=8.673
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 2250)
+Epoch 3/6 KITTI 2300/4328 loss=5.583 VRAI loss=8.499
+Epoch 3/6 KITTI 2350/4328 loss=6.987 VRAI loss=8.652
+Epoch 3/6 KITTI 2400/4328 loss=4.882 VRAI loss=8.711
+Epoch 3/6 KITTI 2450/4328 loss=0.733 VRAI loss=8.560
+Epoch 3/6 KITTI 2500/4328 loss=5.779 VRAI loss=8.615
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 2500)
+Epoch 3/6 KITTI 2550/4328 loss=3.001 VRAI loss=8.696
+Epoch 3/6 KITTI 2600/4328 loss=4.712 VRAI loss=8.576
+Epoch 3/6 KITTI 2650/4328 loss=4.818 VRAI loss=8.514
+Epoch 3/6 KITTI 2700/4328 loss=0.749 VRAI loss=8.613
+Epoch 3/6 KITTI 2750/4328 loss=3.676 VRAI loss=8.575
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 2750)
+Epoch 3/6 KITTI 2800/4328 loss=4.964 VRAI loss=8.724
+Epoch 3/6 KITTI 2850/4328 loss=2.313 VRAI loss=8.570
+Epoch 3/6 KITTI 2900/4328 loss=2.159 VRAI loss=8.578
+Epoch 3/6 KITTI 2950/4328 loss=5.096 VRAI loss=8.544
+Epoch 3/6 KITTI 3000/4328 loss=4.555 VRAI loss=8.490
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 3000)
+Epoch 3/6 KITTI 3050/4328 loss=5.441 VRAI loss=8.600
+Epoch 3/6 KITTI 3100/4328 loss=0.720 VRAI loss=8.656
+Epoch 3/6 KITTI 3150/4328 loss=4.971 VRAI loss=8.716
+Epoch 3/6 KITTI 3200/4328 loss=5.723 VRAI loss=8.600
+Epoch 3/6 KITTI 3250/4328 loss=0.396 VRAI loss=8.680
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 3250)
+Epoch 3/6 KITTI 3300/4328 loss=5.508 VRAI loss=8.491
+Epoch 3/6 KITTI 3350/4328 loss=3.987 VRAI loss=8.514
+Epoch 3/6 KITTI 3400/4328 loss=1.969 VRAI loss=8.562
+Epoch 3/6 KITTI 3450/4328 loss=2.540 VRAI loss=8.505
+Epoch 3/6 KITTI 3500/4328 loss=0.533 VRAI loss=8.854
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 3500)
+Epoch 3/6 KITTI 3550/4328 loss=6.042 VRAI loss=8.537
+Epoch 3/6 KITTI 3600/4328 loss=3.141 VRAI loss=8.688
+Epoch 3/6 KITTI 3650/4328 loss=4.767 VRAI loss=8.520
+Epoch 3/6 KITTI 3700/4328 loss=4.026 VRAI loss=8.578
+Epoch 3/6 KITTI 3750/4328 loss=5.089 VRAI loss=8.583
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 3750)
+Epoch 3/6 KITTI 3800/4328 loss=4.927 VRAI loss=8.697
+Epoch 3/6 KITTI 3850/4328 loss=5.986 VRAI loss=8.514
+Epoch 3/6 KITTI 3900/4328 loss=4.962 VRAI loss=8.654
+Epoch 3/6 KITTI 3950/4328 loss=4.514 VRAI loss=8.580
+Epoch 3/6 KITTI 4000/4328 loss=1.850 VRAI loss=8.599
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 4000)
+Epoch 3/6 KITTI 4050/4328 loss=4.445 VRAI loss=8.491
+Epoch 3/6 KITTI 4100/4328 loss=2.804 VRAI loss=8.604
+Epoch 3/6 KITTI 4150/4328 loss=4.804 VRAI loss=8.694
+Epoch 3/6 KITTI 4200/4328 loss=2.901 VRAI loss=8.598
+Epoch 3/6 KITTI 4250/4328 loss=3.596 VRAI loss=8.539
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 2, current step 4250)
+Epoch 3/6 KITTI 4300/4328 loss=3.956 VRAI loss=8.553
+Epoch 3/6 KITTI 4328/4328 loss=0.682 VRAI loss=8.572
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 0)
+Epoch 4/6 KITTI 50/4328 loss=3.689 VRAI loss=8.506
+Epoch 4/6 KITTI 100/4328 loss=2.739 VRAI loss=8.637
+Epoch 4/6 KITTI 150/4328 loss=4.043 VRAI loss=8.606
+Epoch 4/6 KITTI 200/4328 loss=5.560 VRAI loss=8.527
+Epoch 4/6 KITTI 250/4328 loss=5.013 VRAI loss=8.563
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 250)
+Epoch 4/6 KITTI 300/4328 loss=4.615 VRAI loss=8.583
+Epoch 4/6 KITTI 350/4328 loss=3.548 VRAI loss=8.680
+Epoch 4/6 KITTI 400/4328 loss=0.423 VRAI loss=8.552
+Epoch 4/6 KITTI 450/4328 loss=5.553 VRAI loss=8.525
+Epoch 4/6 KITTI 500/4328 loss=3.382 VRAI loss=8.539
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 500)
+Epoch 4/6 KITTI 550/4328 loss=2.485 VRAI loss=8.827
+Epoch 4/6 KITTI 600/4328 loss=2.720 VRAI loss=8.579
+Epoch 4/6 KITTI 650/4328 loss=4.371 VRAI loss=8.610
+Epoch 4/6 KITTI 700/4328 loss=0.654 VRAI loss=8.501
+Epoch 4/6 KITTI 750/4328 loss=4.112 VRAI loss=8.517
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 750)
+Epoch 4/6 KITTI 800/4328 loss=0.384 VRAI loss=8.598
+Epoch 4/6 KITTI 850/4328 loss=1.906 VRAI loss=8.624
+Epoch 4/6 KITTI 900/4328 loss=4.936 VRAI loss=8.584
+Epoch 4/6 KITTI 950/4328 loss=3.488 VRAI loss=8.484
+Epoch 4/6 KITTI 1000/4328 loss=2.843 VRAI loss=8.523
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 1000)
+Epoch 4/6 KITTI 1050/4328 loss=4.851 VRAI loss=8.510
+Epoch 4/6 KITTI 1100/4328 loss=4.791 VRAI loss=8.742
+Epoch 4/6 KITTI 1150/4328 loss=3.327 VRAI loss=8.623
+Epoch 4/6 KITTI 1200/4328 loss=1.599 VRAI loss=8.634
+Epoch 4/6 KITTI 1250/4328 loss=3.652 VRAI loss=8.479
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 1250)
+Epoch 4/6 KITTI 1300/4328 loss=0.636 VRAI loss=8.654
+Epoch 4/6 KITTI 1350/4328 loss=3.243 VRAI loss=8.515
+Epoch 4/6 KITTI 1400/4328 loss=3.531 VRAI loss=8.503
+Epoch 4/6 KITTI 1450/4328 loss=4.156 VRAI loss=8.524
+Epoch 4/6 KITTI 1500/4328 loss=4.360 VRAI loss=8.608
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 1500)
+Epoch 4/6 KITTI 1550/4328 loss=4.004 VRAI loss=8.669
+Epoch 4/6 KITTI 1600/4328 loss=5.567 VRAI loss=8.626
+Epoch 4/6 KITTI 1650/4328 loss=3.889 VRAI loss=8.542
+Epoch 4/6 KITTI 1700/4328 loss=4.826 VRAI loss=8.465
+Epoch 4/6 KITTI 1750/4328 loss=4.524 VRAI loss=8.661
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 1750)
+Epoch 4/6 KITTI 1800/4328 loss=2.979 VRAI loss=8.525
+Epoch 4/6 KITTI 1850/4328 loss=4.588 VRAI loss=8.473
+Epoch 4/6 KITTI 1900/4328 loss=0.387 VRAI loss=8.818
+Epoch 4/6 KITTI 1950/4328 loss=4.893 VRAI loss=8.567
+Epoch 4/6 KITTI 2000/4328 loss=4.040 VRAI loss=8.658
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 2000)
+Epoch 4/6 KITTI 2050/4328 loss=4.308 VRAI loss=8.557
+Epoch 4/6 KITTI 2100/4328 loss=4.470 VRAI loss=8.558
+Epoch 4/6 KITTI 2150/4328 loss=5.512 VRAI loss=8.717
+Epoch 4/6 KITTI 2200/4328 loss=4.632 VRAI loss=8.568
+Epoch 4/6 KITTI 2250/4328 loss=5.374 VRAI loss=8.600
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 2250)
+Epoch 4/6 KITTI 2300/4328 loss=3.393 VRAI loss=8.656
+Epoch 4/6 KITTI 2350/4328 loss=1.555 VRAI loss=8.745
+Epoch 4/6 KITTI 2400/4328 loss=6.898 VRAI loss=8.574
+Epoch 4/6 KITTI 2450/4328 loss=4.768 VRAI loss=8.650
+Epoch 4/6 KITTI 2500/4328 loss=4.029 VRAI loss=8.512
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 2500)
+Epoch 4/6 KITTI 2550/4328 loss=0.454 VRAI loss=8.602
+Epoch 4/6 KITTI 2600/4328 loss=2.600 VRAI loss=8.569
+Epoch 4/6 KITTI 2650/4328 loss=4.698 VRAI loss=8.593
+Epoch 4/6 KITTI 2700/4328 loss=0.381 VRAI loss=8.486
+Epoch 4/6 KITTI 2750/4328 loss=5.002 VRAI loss=8.492
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 2750)
+Epoch 4/6 KITTI 2800/4328 loss=4.260 VRAI loss=8.586
+Epoch 4/6 KITTI 2850/4328 loss=3.216 VRAI loss=8.609
+Epoch 4/6 KITTI 2900/4328 loss=4.680 VRAI loss=8.623
+Epoch 4/6 KITTI 2950/4328 loss=4.069 VRAI loss=8.486
+Epoch 4/6 KITTI 3000/4328 loss=4.832 VRAI loss=8.544
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 3000)
+Epoch 4/6 KITTI 3050/4328 loss=5.238 VRAI loss=8.678
+Epoch 4/6 KITTI 3100/4328 loss=3.036 VRAI loss=8.530
+Epoch 4/6 KITTI 3150/4328 loss=3.032 VRAI loss=8.614
+Epoch 4/6 KITTI 3200/4328 loss=3.929 VRAI loss=8.464
+Epoch 4/6 KITTI 3250/4328 loss=3.861 VRAI loss=8.551
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 3250)
+Epoch 4/6 KITTI 3300/4328 loss=4.556 VRAI loss=8.516
+Epoch 4/6 KITTI 3350/4328 loss=5.882 VRAI loss=8.506
+Epoch 4/6 KITTI 3400/4328 loss=4.830 VRAI loss=8.629
+Epoch 4/6 KITTI 3450/4328 loss=3.490 VRAI loss=8.641
+Epoch 4/6 KITTI 3500/4328 loss=6.103 VRAI loss=8.514
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 3500)
+Epoch 4/6 KITTI 3550/4328 loss=5.872 VRAI loss=8.670
+Epoch 4/6 KITTI 3600/4328 loss=4.643 VRAI loss=8.609
+Epoch 4/6 KITTI 3650/4328 loss=2.428 VRAI loss=8.614
+Epoch 4/6 KITTI 3700/4328 loss=0.355 VRAI loss=8.612
+Epoch 4/6 KITTI 3750/4328 loss=4.650 VRAI loss=8.530
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 3750)
+Epoch 4/6 KITTI 3800/4328 loss=3.758 VRAI loss=8.573
+Epoch 4/6 KITTI 3850/4328 loss=3.948 VRAI loss=8.527
+Epoch 4/6 KITTI 3900/4328 loss=0.334 VRAI loss=8.746
+Epoch 4/6 KITTI 3950/4328 loss=4.242 VRAI loss=8.605
+Epoch 4/6 KITTI 4000/4328 loss=5.240 VRAI loss=8.538
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 4000)
+Epoch 4/6 KITTI 4050/4328 loss=4.123 VRAI loss=8.584
+Epoch 4/6 KITTI 4100/4328 loss=4.716 VRAI loss=8.624
+Epoch 4/6 KITTI 4150/4328 loss=2.768 VRAI loss=8.579
+Epoch 4/6 KITTI 4200/4328 loss=2.900 VRAI loss=8.556
+Epoch 4/6 KITTI 4250/4328 loss=4.781 VRAI loss=8.642
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 3, current step 4250)
+Epoch 4/6 KITTI 4300/4328 loss=3.984 VRAI loss=8.482
+Epoch 4/6 KITTI 4328/4328 loss=3.178 VRAI loss=8.396
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 0)
+Epoch 5/6 KITTI 50/4328 loss=4.868 VRAI loss=8.606
+Epoch 5/6 KITTI 100/4328 loss=3.808 VRAI loss=8.602
+Epoch 5/6 KITTI 150/4328 loss=2.565 VRAI loss=8.640
+Epoch 5/6 KITTI 200/4328 loss=4.664 VRAI loss=8.702
+Epoch 5/6 KITTI 250/4328 loss=2.930 VRAI loss=8.540
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 250)
+Epoch 5/6 KITTI 300/4328 loss=2.161 VRAI loss=8.598
+Epoch 5/6 KITTI 350/4328 loss=3.550 VRAI loss=8.694
+Epoch 5/6 KITTI 400/4328 loss=4.923 VRAI loss=8.459
+Epoch 5/6 KITTI 450/4328 loss=4.233 VRAI loss=8.549
+Epoch 5/6 KITTI 500/4328 loss=2.608 VRAI loss=8.513
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 500)
+Epoch 5/6 KITTI 550/4328 loss=0.410 VRAI loss=8.559
+Epoch 5/6 KITTI 600/4328 loss=2.513 VRAI loss=8.582
+Epoch 5/6 KITTI 650/4328 loss=4.655 VRAI loss=8.480
+Epoch 5/6 KITTI 700/4328 loss=0.402 VRAI loss=8.648
+Epoch 5/6 KITTI 750/4328 loss=3.024 VRAI loss=8.638
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 750)
+Epoch 5/6 KITTI 800/4328 loss=4.782 VRAI loss=8.494
+Epoch 5/6 KITTI 850/4328 loss=0.353 VRAI loss=8.522
+Epoch 5/6 KITTI 900/4328 loss=3.851 VRAI loss=8.705
+Epoch 5/6 KITTI 950/4328 loss=3.142 VRAI loss=8.580
+Epoch 5/6 KITTI 1000/4328 loss=3.479 VRAI loss=8.561
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 1000)
+Epoch 5/6 KITTI 1050/4328 loss=2.084 VRAI loss=8.593
+Epoch 5/6 KITTI 1100/4328 loss=3.931 VRAI loss=8.610
+Epoch 5/6 KITTI 1150/4328 loss=5.435 VRAI loss=8.713
+Epoch 5/6 KITTI 1200/4328 loss=2.562 VRAI loss=8.487
+Epoch 5/6 KITTI 1250/4328 loss=3.021 VRAI loss=8.597
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 1250)
+Epoch 5/6 KITTI 1300/4328 loss=3.621 VRAI loss=8.603
+Epoch 5/6 KITTI 1350/4328 loss=4.012 VRAI loss=8.504
+Epoch 5/6 KITTI 1400/4328 loss=0.367 VRAI loss=8.629
+Epoch 5/6 KITTI 1450/4328 loss=2.923 VRAI loss=8.654
+Epoch 5/6 KITTI 1500/4328 loss=2.847 VRAI loss=8.496
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 1500)
+Epoch 5/6 KITTI 1550/4328 loss=4.674 VRAI loss=8.496
+Epoch 5/6 KITTI 1600/4328 loss=4.562 VRAI loss=8.677
+Epoch 5/6 KITTI 1650/4328 loss=5.087 VRAI loss=8.597
+Epoch 5/6 KITTI 1700/4328 loss=4.404 VRAI loss=8.653
+Epoch 5/6 KITTI 1750/4328 loss=4.778 VRAI loss=8.427
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 1750)
+Epoch 5/6 KITTI 1800/4328 loss=4.008 VRAI loss=8.718
+Epoch 5/6 KITTI 1850/4328 loss=4.911 VRAI loss=8.533
+Epoch 5/6 KITTI 1900/4328 loss=4.121 VRAI loss=8.592
+Epoch 5/6 KITTI 1950/4328 loss=3.112 VRAI loss=8.479
+Epoch 5/6 KITTI 2000/4328 loss=3.244 VRAI loss=8.595
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 2000)
+Epoch 5/6 KITTI 2050/4328 loss=3.441 VRAI loss=8.524
+Epoch 5/6 KITTI 2100/4328 loss=1.643 VRAI loss=8.680
+Epoch 5/6 KITTI 2150/4328 loss=4.845 VRAI loss=8.716
+Epoch 5/6 KITTI 2200/4328 loss=2.237 VRAI loss=8.554
+Epoch 5/6 KITTI 2250/4328 loss=4.119 VRAI loss=8.499
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 2250)
+Epoch 5/6 KITTI 2300/4328 loss=3.428 VRAI loss=8.484
+Epoch 5/6 KITTI 2350/4328 loss=4.801 VRAI loss=8.487
+Epoch 5/6 KITTI 2400/4328 loss=7.103 VRAI loss=8.485
+Epoch 5/6 KITTI 2450/4328 loss=3.138 VRAI loss=8.482
+Epoch 5/6 KITTI 2500/4328 loss=4.264 VRAI loss=8.639
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 2500)
+Epoch 5/6 KITTI 2550/4328 loss=4.599 VRAI loss=8.433
+Epoch 5/6 KITTI 2600/4328 loss=3.247 VRAI loss=8.637
+Epoch 5/6 KITTI 2650/4328 loss=5.059 VRAI loss=8.532
+Epoch 5/6 KITTI 2700/4328 loss=1.356 VRAI loss=8.556
+Epoch 5/6 KITTI 2750/4328 loss=3.312 VRAI loss=8.484
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 2750)
+Epoch 5/6 KITTI 2800/4328 loss=4.139 VRAI loss=8.555
+Epoch 5/6 KITTI 2850/4328 loss=4.364 VRAI loss=8.509
+Epoch 5/6 KITTI 2900/4328 loss=4.516 VRAI loss=8.698
+Epoch 5/6 KITTI 2950/4328 loss=5.868 VRAI loss=8.391
+Epoch 5/6 KITTI 3000/4328 loss=4.614 VRAI loss=8.680
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 3000)
+Epoch 5/6 KITTI 3050/4328 loss=1.644 VRAI loss=8.502
+Epoch 5/6 KITTI 3100/4328 loss=3.510 VRAI loss=8.502
+Epoch 5/6 KITTI 3150/4328 loss=5.253 VRAI loss=8.578
+Epoch 5/6 KITTI 3200/4328 loss=3.140 VRAI loss=8.514
+Epoch 5/6 KITTI 3250/4328 loss=3.062 VRAI loss=8.475
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 3250)
+Epoch 5/6 KITTI 3300/4328 loss=5.417 VRAI loss=8.630
+Epoch 5/6 KITTI 3350/4328 loss=3.722 VRAI loss=8.674
+Epoch 5/6 KITTI 3400/4328 loss=2.238 VRAI loss=8.481
+Epoch 5/6 KITTI 3450/4328 loss=2.727 VRAI loss=8.479
+Epoch 5/6 KITTI 3500/4328 loss=4.531 VRAI loss=8.496
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 3500)
+Epoch 5/6 KITTI 3550/4328 loss=3.565 VRAI loss=8.522
+Epoch 5/6 KITTI 3600/4328 loss=4.716 VRAI loss=8.567
+Epoch 5/6 KITTI 3650/4328 loss=4.760 VRAI loss=8.591
+Epoch 5/6 KITTI 3700/4328 loss=3.773 VRAI loss=8.558
+Epoch 5/6 KITTI 3750/4328 loss=3.039 VRAI loss=8.421
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 3750)
+Epoch 5/6 KITTI 3800/4328 loss=4.840 VRAI loss=8.523
+Epoch 5/6 KITTI 3850/4328 loss=0.295 VRAI loss=8.554
+Epoch 5/6 KITTI 3900/4328 loss=3.680 VRAI loss=8.577
+Epoch 5/6 KITTI 3950/4328 loss=3.277 VRAI loss=8.493
+Epoch 5/6 KITTI 4000/4328 loss=3.079 VRAI loss=8.525
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 4000)
+Epoch 5/6 KITTI 4050/4328 loss=4.103 VRAI loss=8.506
+Epoch 5/6 KITTI 4100/4328 loss=4.671 VRAI loss=8.617
+Epoch 5/6 KITTI 4150/4328 loss=2.025 VRAI loss=8.590
+Epoch 5/6 KITTI 4200/4328 loss=3.635 VRAI loss=8.594
+Epoch 5/6 KITTI 4250/4328 loss=3.982 VRAI loss=8.692
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 4, current step 4250)
+Epoch 5/6 KITTI 4300/4328 loss=4.344 VRAI loss=8.532
+Epoch 5/6 KITTI 4328/4328 loss=2.185 VRAI loss=8.520
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 0)
+Epoch 6/6 KITTI 50/4328 loss=0.489 VRAI loss=8.451
+Epoch 6/6 KITTI 100/4328 loss=4.368 VRAI loss=8.550
+Epoch 6/6 KITTI 150/4328 loss=4.021 VRAI loss=8.549
+Epoch 6/6 KITTI 200/4328 loss=4.023 VRAI loss=8.542
+Epoch 6/6 KITTI 250/4328 loss=3.591 VRAI loss=8.562
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 250)
+Epoch 6/6 KITTI 300/4328 loss=2.229 VRAI loss=8.457
+Epoch 6/6 KITTI 350/4328 loss=2.629 VRAI loss=8.621
+Epoch 6/6 KITTI 400/4328 loss=5.187 VRAI loss=8.636
+Epoch 6/6 KITTI 450/4328 loss=5.420 VRAI loss=8.514
+Epoch 6/6 KITTI 500/4328 loss=2.538 VRAI loss=8.523
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 500)
+Epoch 6/6 KITTI 550/4328 loss=2.970 VRAI loss=8.434
+Epoch 6/6 KITTI 600/4328 loss=2.123 VRAI loss=8.417
+Epoch 6/6 KITTI 650/4328 loss=5.040 VRAI loss=8.491
+Epoch 6/6 KITTI 700/4328 loss=3.212 VRAI loss=8.457
+Epoch 6/6 KITTI 750/4328 loss=5.378 VRAI loss=8.478
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 750)
+Epoch 6/6 KITTI 800/4328 loss=4.872 VRAI loss=8.476
+Epoch 6/6 KITTI 850/4328 loss=0.298 VRAI loss=8.546
+Epoch 6/6 KITTI 900/4328 loss=3.253 VRAI loss=8.518
+Epoch 6/6 KITTI 950/4328 loss=5.282 VRAI loss=8.674
+Epoch 6/6 KITTI 1000/4328 loss=4.855 VRAI loss=8.473
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 1000)
+Epoch 6/6 KITTI 1050/4328 loss=3.748 VRAI loss=8.592
+Epoch 6/6 KITTI 1100/4328 loss=0.258 VRAI loss=8.717
+Epoch 6/6 KITTI 1150/4328 loss=1.465 VRAI loss=8.707
+Epoch 6/6 KITTI 1200/4328 loss=4.226 VRAI loss=8.469
+Epoch 6/6 KITTI 1250/4328 loss=5.713 VRAI loss=8.637
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 1250)
+Epoch 6/6 KITTI 1300/4328 loss=4.922 VRAI loss=8.499
+Epoch 6/6 KITTI 1350/4328 loss=4.455 VRAI loss=8.479
+Epoch 6/6 KITTI 1400/4328 loss=3.435 VRAI loss=8.493
+Epoch 6/6 KITTI 1450/4328 loss=1.992 VRAI loss=8.493
+Epoch 6/6 KITTI 1500/4328 loss=3.602 VRAI loss=8.418
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 1500)
+Epoch 6/6 KITTI 1550/4328 loss=1.336 VRAI loss=8.464
+Epoch 6/6 KITTI 1600/4328 loss=3.851 VRAI loss=8.536
+Epoch 6/6 KITTI 1650/4328 loss=2.054 VRAI loss=8.608
+Epoch 6/6 KITTI 1700/4328 loss=0.582 VRAI loss=8.597
+Epoch 6/6 KITTI 1750/4328 loss=4.658 VRAI loss=8.498
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 1750)
+Epoch 6/6 KITTI 1800/4328 loss=3.700 VRAI loss=8.635
+Epoch 6/6 KITTI 1850/4328 loss=3.599 VRAI loss=8.674
+Epoch 6/6 KITTI 1900/4328 loss=4.839 VRAI loss=8.470
+Epoch 6/6 KITTI 1950/4328 loss=2.472 VRAI loss=8.570
+Epoch 6/6 KITTI 2000/4328 loss=4.935 VRAI loss=8.477
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 2000)
+Epoch 6/6 KITTI 2050/4328 loss=5.136 VRAI loss=8.465
+Epoch 6/6 KITTI 2100/4328 loss=2.190 VRAI loss=8.588
+Epoch 6/6 KITTI 2150/4328 loss=4.218 VRAI loss=8.549
+Epoch 6/6 KITTI 2200/4328 loss=4.438 VRAI loss=8.631
+Epoch 6/6 KITTI 2250/4328 loss=4.102 VRAI loss=8.526
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 2250)
+Epoch 6/6 KITTI 2300/4328 loss=3.073 VRAI loss=8.471
+Epoch 6/6 KITTI 2350/4328 loss=5.635 VRAI loss=8.459
+Epoch 6/6 KITTI 2400/4328 loss=0.242 VRAI loss=8.484
+Epoch 6/6 KITTI 2450/4328 loss=2.569 VRAI loss=8.604
+Epoch 6/6 KITTI 2500/4328 loss=0.281 VRAI loss=8.567
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 2500)
+Epoch 6/6 KITTI 2550/4328 loss=2.668 VRAI loss=8.568
+Epoch 6/6 KITTI 2600/4328 loss=3.012 VRAI loss=8.539
+Epoch 6/6 KITTI 2650/4328 loss=3.641 VRAI loss=8.571
+Epoch 6/6 KITTI 2700/4328 loss=0.245 VRAI loss=8.496
+Epoch 6/6 KITTI 2750/4328 loss=2.463 VRAI loss=8.622
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 2750)
+Epoch 6/6 KITTI 2800/4328 loss=5.139 VRAI loss=8.501
+Epoch 6/6 KITTI 2850/4328 loss=4.964 VRAI loss=8.643
+Epoch 6/6 KITTI 2900/4328 loss=3.328 VRAI loss=8.776
+Epoch 6/6 KITTI 2950/4328 loss=2.420 VRAI loss=8.615
+Epoch 6/6 KITTI 3000/4328 loss=4.800 VRAI loss=8.435
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 3000)
+Epoch 6/6 KITTI 3050/4328 loss=4.609 VRAI loss=8.457
+Epoch 6/6 KITTI 3100/4328 loss=5.228 VRAI loss=8.482
+Epoch 6/6 KITTI 3150/4328 loss=4.365 VRAI loss=8.582
+Epoch 6/6 KITTI 3200/4328 loss=3.216 VRAI loss=8.567
+Epoch 6/6 KITTI 3250/4328 loss=2.949 VRAI loss=8.606
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 3250)
+Epoch 6/6 KITTI 3300/4328 loss=4.824 VRAI loss=8.600
+Epoch 6/6 KITTI 3350/4328 loss=1.429 VRAI loss=8.657
+Epoch 6/6 KITTI 3400/4328 loss=3.111 VRAI loss=8.464
+Epoch 6/6 KITTI 3450/4328 loss=3.287 VRAI loss=8.608
+Epoch 6/6 KITTI 3500/4328 loss=3.111 VRAI loss=8.519
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 3500)
+Epoch 6/6 KITTI 3550/4328 loss=0.232 VRAI loss=8.687
+Epoch 6/6 KITTI 3600/4328 loss=5.059 VRAI loss=8.709
+Epoch 6/6 KITTI 3650/4328 loss=4.274 VRAI loss=8.465
+Epoch 6/6 KITTI 3700/4328 loss=4.500 VRAI loss=8.537
+Epoch 6/6 KITTI 3750/4328 loss=1.268 VRAI loss=8.605
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 3750)
+Epoch 6/6 KITTI 3800/4328 loss=5.832 VRAI loss=8.604
+Epoch 6/6 KITTI 3850/4328 loss=1.253 VRAI loss=8.456
+Epoch 6/6 KITTI 3900/4328 loss=1.294 VRAI loss=8.561
+Epoch 6/6 KITTI 3950/4328 loss=3.477 VRAI loss=8.641
+Epoch 6/6 KITTI 4000/4328 loss=2.339 VRAI loss=8.669
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 4000)
+Epoch 6/6 KITTI 4050/4328 loss=1.262 VRAI loss=8.544
+Epoch 6/6 KITTI 4100/4328 loss=3.491 VRAI loss=8.462
+Epoch 6/6 KITTI 4150/4328 loss=0.231 VRAI loss=8.601
+Epoch 6/6 KITTI 4200/4328 loss=2.504 VRAI loss=8.564
+Epoch 6/6 KITTI 4250/4328 loss=2.377 VRAI loss=8.460
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 5, current step 4250)
+Epoch 6/6 KITTI 4300/4328 loss=4.147 VRAI loss=8.929
+Epoch 6/6 KITTI 4328/4328 loss=0.223 VRAI loss=8.513
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/full_frame_resnet50_kitti_vrai.pt (completed epochs 6, current step 0)

@@ -1,4 +1,9 @@
 .venv/
+.teacher-env/
+capstone/reid/utils/vendor/Co-DETR/
+capstone/reid/utils/vendor/McBytePlusPlus/
+capstone/reid/utils/vendor/Cutie/
+capstone/reid/utils/vendor/TransReID/
 *.onnx
 *.zip
 *.jpg

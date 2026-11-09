@@ -5,12 +5,28 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("dataset", choices=("aicity", "visdrone", "vrai", "vru", "isaid", "vehicle-masks",
+    parser.add_argument("dataset", choices=("aicity", "visdrone", "vrai", "vru", "isaid", "vehicle-masks", "kitti",
                                             "bucktales", "sop", "abo", "folders", "sues",
                                             "visdrone-folders"))
     parser.add_argument("rest", nargs=argparse.REMAINDER,
                         help="source options for sop, abo, folders, sues, or visdrone-folders")
     args = parser.parse_args()
+    if args.dataset == "kitti":
+        if args.rest:
+            parser.error('kitti uses config.yaml and accepts no extra arguments')
+        from pathlib import Path
+        import yaml
+        from utils.full_frame.kitti import unpack_kitti
+        config_path = Path(__file__).with_name('config.yaml')
+        settings = yaml.safe_load(config_path.read_text())['full_frame']
+        root = Path(settings['data_root']).expanduser()
+        if not root.is_absolute():
+            root = config_path.parent / root
+        def archive_path(value):
+            path = Path(value).expanduser()
+            return path if path.is_absolute() else config_path.parent / path
+        return unpack_kitti(root, archive_path(settings['images_archive']),
+                            archive_path(settings['labels_archive']))
     if args.dataset == "aicity":
         from utils.data_sources.prepare_aicity import main as run
     elif args.dataset == "visdrone":

@@ -1,4 +1,135 @@
-# ShuffleNetV2 object masks and ReID
+# Vehicle detection, instance masks, and ReID
+
+## Specialist vehicle ReID teacher
+
+MSINet's vehicle-trained checkpoint won the new calibration comparison and
+reached **77.27% Rank-1 / 75.11% mAP** on the local VRAI final split. See
+[the specialist guide](docs/reid_teacher.md) and [results](metrics/reid_teacher/final.html).
+`python train.py reid-teacher` fine-tunes a separate vehicle-pretrained TransReID
+challenger; `python benchmark.py reid-teacher` compares calibration scores.
+Configure `configs/reid_teacher.yaml`. This is the identity teacher selection
+step before distilling a joint student.
+
+## Compare trackers and preview CUTIE
+
+`python benchmark.py trackers` evaluates the fixed teacher with the current
+tracker, a motion-only control, and adapted McByte++ with/without EdgeTAM mask
+propagation. `python demo.py cutie` renders a selected vehicle with the baseline
+tracker and CUTIE side by side. Configure `configs/tracking.yaml`; read the
+[tracking experiment guide](docs/tracking.md) for setup, resume, comparison
+conditions, and timing limitations. No network training is needed.
+
+## Accuracy-first pretrained teacher
+
+Run `python train.py teacher` to fine-tune the new **Co-DINO-Inst ViT-L +
+RefineMask + shared mask-guided 256D ReID head**. The pretrained detector/mask
+weights and isolated environment are installed on this machine. Settings live
+in `configs/teacher.yaml`. It trains on clean KITTI MOTS car sequences and
+identity-disjoint VRAI vehicle data, resumes its own checkpoints, and automatically
+evaluates after training. Read [the teacher guide](docs/teacher.md) for commands,
+architecture, training schedule, outputs, and the later distillation plan.
+
+This is a stronger published teacher candidate; benchmark results are needed
+before claiming improvements or state of the art. The added ReID head starts
+with new parameters. No compact student or distillation run is implemented yet.
+
+## Clean paper-comparison experiment
+
+Run `python train.py kitti-mots` to train a new COCO-initialized checkpoint on
+the conventional KITTI MOTS train/validation split and automatically evaluate
+sequence-level tracking afterward. Edit `configs/kitti_mots.yaml` for this
+experiment. Read the [benchmark guide](docs/kitti_mots_benchmark.md) for the
+protocol, tracker, resume behavior, and external baseline format. The report
+will be `metrics/kitti_mots/summary.html`. Existing full-frame checkpoints use
+a different split and cannot be ranked against published KITTI MOTS scores.
+
+## First full-frame vehicle model
+
+`python train.py full-frame-smoke` runs a synthetic training and inference
+check without data or a network download. The new model in
+`utils/full_frame/model.py` takes a complete image and returns a box, instance
+mask, and 128D embedding for each detected vehicle. The default is a
+COCO-pretrained Mask R-CNN ResNet-50-FPN v2. Its car/background predictors
+initialize the two-class box and mask heads; a mask-pooled ReID head shares
+its image features. The ReID head learns from within-video KITTI MOTS track
+IDs using identity classification and batch-hard triplet loss. It is a first
+baseline that has completed KITTI training. It currently predicts masks for every
+detection. The target-selection algorithm is separate from the network. The
+`image_size: 640` setting scales the longest image side to at most 640 pixels
+while preserving aspect ratio; it is not yet a fixed 640×640 export shape.
+The ReID head uses the network's predicted foreground mask during training
+and inference. This larger model is the teacher candidate; the small student
+and its distillation losses come after teacher accuracy is established. See
+[the teacher-to-student plan](FULL_FRAME_MOTS.md#teacher-first-compact-student-later).
+
+The KITTI archives are stored in `data/kitti_mots/archives/`, and their
+training frames and labels are extracted under `data/kitti_mots/`. From
+`capstone/reid`, run:
+
+```bash
+python prepare.py kitti
+python train.py full-frame-check
+python train.py full-frame
+python train.py full-frame-eval
+python train.py full-frame-vrai
+```
+
+The KITTI-only checkpoint reaches 65.4% local box AP50 and 88.8% mean mask
+IoU on matched cars, but its cross-camera VRAI Rank-1 is low. To continue the
+same shared model with identity-disjoint, two-camera VRAI training images:
+
+```bash
+python train.py full-frame-multiview-check
+python train.py full-frame-multiview
+python train.py full-frame-multiview-eval
+python train.py full-frame-multiview-vrai
+```
+
+`full-frame-multiview` starts from the completed KITTI checkpoint, retains
+full-frame KITTI box/mask/track-ID steps, and inserts a VRAI crop ReID step
+after every two KITTI steps. Each VRAI step samples four training identities,
+one image from each of two cameras per identity, with color and flip
+augmentation. Its identity classification and batch-hard triplet losses update
+the shared backbone, predicted-mask path, and 128D ReID head. VRAI's local
+query/gallery IDs remain excluded. Vehicle crops are known boxes during the
+VRAI steps; KITTI continues to supervise full-frame detection and masks.
+Settings are under `full_frame.multiview` in `config.yaml`. The new checkpoint
+is `checkpoints/full_frame_resnet50_kitti_vrai.pt`, separate from the KITTI
+teacher, and saves every 250 KITTI steps for resume. The two VRAI evaluation
+commands use the same 320-pixel crop size. This is a long GPU training run;
+the `-check` command does one real-data gradient check without saving weights.
+
+`prepare.py kitti` reads the KITTI tracking image ZIP and the
+`instances_txt.zip` annotations from `data/kitti_mots/archives/`, copies training images and labels into
+`data/kitti_mots/`, and skips already complete files if restarted. The ZIP
+names and training settings live under `full_frame:` in `config.yaml`. The
+train/validation sequence lists do not overlap. `full-frame-check` reads a real
+train pair, verifies the validation set, and runs every training loss once
+without downloading weights. `train.py full-frame` saves
+`checkpoints/full_frame_resnet50_kitti.pt` after each epoch and resumes from it. The
+training command does not compute validation AP or HOTA. The evaluation
+command evaluates all held-out adjacent frame pairs by default (set
+`full_frame.eval_pairs` in `config.yaml` for a quick sample) and reports box
+AP50, precision/recall at IoU 0.5, mean matched mask IoU, and adjacent-frame
+ReID Rank-1. It also reports inference time on the selected device and how many ReID
+queries had multiple candidates. These diagnostics are not COCO AP@[.50:.95],
+HOTA, or cross-camera ReID scores. `full-frame-vrai` measures mask-guided and
+global-pooled crop embeddings on the identity-disjoint local VRAI split. It
+uses the known vehicle crop as an oracle box, so it measures retrieval rather
+than full-frame detection. Those results are not official VRAI test scores.
+Keep the official KITTI test sequences out of training.
+KITTI evaluation summaries are saved under `metrics/` as
+`full_frame_kitti_local.csv` or `full_frame_multiview_kitti_local.csv`.
+
+The image ZIP named in the default config is `data_tracking_image_2.zip`;
+a `.zip.part` download is incomplete and cannot be prepared. If an archive
+has a different name, update `images_archive` or `labels_archive` in
+`config.yaml`.
+
+After the architecture works and its accuracy is measured, change
+`full_frame.architecture` to `shufflenet_fpn` for a size/latency comparison.
+Use a separate checkpoint path for that experiment. The smaller option is
+kept as a later ablation rather than the default system.
 
 **Current research target:** [FULL_FRAME_MOTS.md](FULL_FRAME_MOTS.md) describes
 the intended one-network vehicle detector, instance segmenter, and ReID

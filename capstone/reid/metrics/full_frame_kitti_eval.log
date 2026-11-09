@@ -1,0 +1,93 @@
+Evaluated 25/2092 pairs
+Evaluated 50/2092 pairs
+Evaluated 75/2092 pairs
+Evaluated 100/2092 pairs
+Evaluated 125/2092 pairs
+Evaluated 150/2092 pairs
+Evaluated 175/2092 pairs
+Evaluated 200/2092 pairs
+Evaluated 225/2092 pairs
+Evaluated 250/2092 pairs
+Evaluated 275/2092 pairs
+Evaluated 300/2092 pairs
+Evaluated 325/2092 pairs
+Evaluated 350/2092 pairs
+Evaluated 375/2092 pairs
+Evaluated 400/2092 pairs
+Evaluated 425/2092 pairs
+Evaluated 450/2092 pairs
+Evaluated 475/2092 pairs
+Evaluated 500/2092 pairs
+Evaluated 525/2092 pairs
+Evaluated 550/2092 pairs
+Evaluated 575/2092 pairs
+Evaluated 600/2092 pairs
+Evaluated 625/2092 pairs
+Evaluated 650/2092 pairs
+Evaluated 675/2092 pairs
+Evaluated 700/2092 pairs
+Evaluated 725/2092 pairs
+Evaluated 750/2092 pairs
+Evaluated 775/2092 pairs
+Evaluated 800/2092 pairs
+Evaluated 825/2092 pairs
+Evaluated 850/2092 pairs
+Evaluated 875/2092 pairs
+Evaluated 900/2092 pairs
+Evaluated 925/2092 pairs
+Evaluated 950/2092 pairs
+Evaluated 975/2092 pairs
+Evaluated 1000/2092 pairs
+Evaluated 1025/2092 pairs
+Evaluated 1050/2092 pairs
+Evaluated 1075/2092 pairs
+Evaluated 1100/2092 pairs
+Evaluated 1125/2092 pairs
+Evaluated 1150/2092 pairs
+Evaluated 1175/2092 pairs
+Evaluated 1200/2092 pairs
+Evaluated 1225/2092 pairs
+Evaluated 1250/2092 pairs
+Evaluated 1275/2092 pairs
+Evaluated 1300/2092 pairs
+Evaluated 1325/2092 pairs
+Evaluated 1350/2092 pairs
+Evaluated 1375/2092 pairs
+Evaluated 1400/2092 pairs
+Evaluated 1425/2092 pairs
+Evaluated 1450/2092 pairs
+Evaluated 1475/2092 pairs
+Evaluated 1500/2092 pairs
+Evaluated 1525/2092 pairs
+Evaluated 1550/2092 pairs
+Evaluated 1575/2092 pairs
+Evaluated 1600/2092 pairs
+Evaluated 1625/2092 pairs
+Evaluated 1650/2092 pairs
+Evaluated 1675/2092 pairs
+Evaluated 1700/2092 pairs
+Evaluated 1725/2092 pairs
+Evaluated 1750/2092 pairs
+Evaluated 1775/2092 pairs
+Evaluated 1800/2092 pairs
+Evaluated 1825/2092 pairs
+Evaluated 1850/2092 pairs
+Evaluated 1875/2092 pairs
+Evaluated 1900/2092 pairs
+Evaluated 1925/2092 pairs
+Evaluated 1950/2092 pairs
+Evaluated 1975/2092 pairs
+Evaluated 2000/2092 pairs
+Evaluated 2025/2092 pairs
+Evaluated 2050/2092 pairs
+Evaluated 2075/2092 pairs
+Checkpoint epoch 8; 2092 of 2092 held-out adjacent pairs; device=cpu
+Box AP50 (101-point interpolation, unique first frames): 0.654
+Box IoU≥0.5, score≥0.05: precision=0.912, recall=0.664 (TP=5595, FP=540, FN=2826)
+Box IoU≥0.5, score≥0.5: precision=0.950, recall=0.618 (TP=5208, FP=275, FN=3213)
+Mean mask IoU for matched detections at score≥0.5: 0.888 (5208 masks)
+Adjacent-frame ReID Rank-1 among matched detections: 0.999 (4954/4957)
+With at least two candidate cars: 0.999 (4384/4387)
+Detection score range: 0.050–1.000
+Median inference latency: 112.2 ms/frame (this CPU, 2-frame batches, excludes image loading)
+Local validation: AP50 is not COCO AP@[.50:.95], HOTA, or cross-camera ReID.

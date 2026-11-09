@@ -9,9 +9,14 @@ from utils.visualization.video import render
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", nargs="?", choices=("select", "crossdrone"),
+    parser.add_argument("mode", nargs="?", choices=("select", "crossdrone", "cutie"),
                         help="select a VisDrone object or render BuckTales cross-drone matching")
     mode = parser.parse_args().mode
+    if mode == "cutie":
+        from utils.teacher.launcher import launch
+        from utils.tracking.video import run as selected_video
+        launch('tracking-cache-selected')
+        return selected_video()
     if mode == "select":
         from utils.visualization.select import main as select
         return select()

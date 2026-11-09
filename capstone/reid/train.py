@@ -19,7 +19,7 @@ KEYS = set(PATH_KEYS) | {
     "instances_per_id", "steps_per_epoch", "source_batch_weights",
     "triplet_margin", "triplet_weight", "mask_every", "mask_loss_weight",
     "selection", "benchmark", "comparison", "vehicle_comparison", "vehicle_warmstart",
-    "vehicle_masks",
+    "vehicle_masks", "full_frame",
     "aerial_mask_eval", "vrai", "vru",
 }
 
@@ -78,6 +78,7 @@ def read_config():
     del config["vehicle_comparison"]  # The vehicle-only matched experiment reads this section itself.
     del config["vehicle_warmstart"]  # The matched continuation reads this section itself.
     del config["vehicle_masks"]  # Vehicle mask preparation reads this section itself.
+    del config["full_frame"]  # Full-frame KITTI MOTS training has its own command.
     del config["aerial_mask_eval"]  # The aerial mask check reads this section itself.
     del config["vrai"]  # The VRAI preparation command reads this section itself.
     del config["vru"]  # The VRU preparation command reads this section itself.
@@ -153,9 +154,42 @@ def main():
     parser = argparse.ArgumentParser(
         description="Train and evaluate the joint segmentation + ReID model using config.yaml."
     )
-    parser.add_argument("mode", nargs="?", choices=("compare", "compare-vehicles", "warmstart-vehicles", "visdrone"),
+    parser.add_argument("mode", nargs="?", choices=("compare", "compare-vehicles", "warmstart-vehicles", "visdrone", "full-frame", "full-frame-smoke", "full-frame-check", "full-frame-eval", "full-frame-vrai", "full-frame-multiview", "full-frame-multiview-check", "full-frame-multiview-eval", "full-frame-multiview-vrai", "kitti-mots", "teacher-setup", "teacher-check", "teacher", "reid-teacher", "reid-teacher-check"),
                         help="optional matched comparison or separate VisDrone training")
     options = parser.parse_args()
+    if options.mode in ("reid-teacher", "reid-teacher-check"):
+        from utils.reid_teacher.training import train as specialist
+        return specialist(check=options.mode.endswith('-check'))
+    if options.mode in ("teacher-setup", "teacher-check", "teacher"):
+        from utils.teacher.launcher import setup, launch
+        return setup() if options.mode == "teacher-setup" else launch("check" if options.mode == "teacher-check" else "train")
+    if options.mode == "kitti-mots":
+        from utils.full_frame.protocol import train as train_benchmark
+        return train_benchmark()
+    if options.mode == "full-frame-smoke":
+        from utils.full_frame.training import smoke_test
+        return smoke_test()
+    if options.mode == "full-frame-check":
+        from utils.full_frame.training import check_dataset
+        return check_dataset(CONFIG)
+    if options.mode == "full-frame":
+        from utils.full_frame.training import train as train_full_frame
+        return train_full_frame(CONFIG)
+    if options.mode == "full-frame-eval":
+        from utils.full_frame.evaluate import evaluate as evaluate_full_frame
+        return evaluate_full_frame(CONFIG)
+    if options.mode == "full-frame-vrai":
+        from utils.full_frame.cross_view import evaluate as evaluate_full_frame_vrai
+        return evaluate_full_frame_vrai(CONFIG)
+    if options.mode in ("full-frame-multiview", "full-frame-multiview-check"):
+        from utils.full_frame.multiview import train as train_multiview
+        return train_multiview(CONFIG, check_only=options.mode.endswith("-check"))
+    if options.mode == "full-frame-multiview-eval":
+        from utils.full_frame.evaluate import evaluate as evaluate_full_frame
+        return evaluate_full_frame(CONFIG, multiview=True)
+    if options.mode == "full-frame-multiview-vrai":
+        from utils.full_frame.cross_view import evaluate as evaluate_full_frame_vrai
+        return evaluate_full_frame_vrai(CONFIG, multiview=True)
     if options.mode == "compare":
         from utils.experiments.compare import main as compare
         return compare()

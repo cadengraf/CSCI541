@@ -1,0 +1,2 @@
+model,epoch,pairs,box_ap50,matched_mask_iou,adjacent_rank1,multi_candidate_rank1,median_ms_per_frame,device,precision_score_0.05,recall_score_0.05,precision_score_0.5,recall_score_0.5
+KITTI + VRAI,6,2092,0.664356253194801,0.8833150688446462,0.9960189573459716,0.9954058192955589,6.290789604187012,cuda,0.9240731746802655,0.6778292364327277,0.9438566552901024,0.6568103550647192

@@ -8,8 +8,13 @@ for the selected vehicle or a short list of candidates**, while retaining compet
 cross-view identity accuracy at lower end-to-end latency than a larger joint
 model or a detector/segmenter plus separate ReID model?
 
-This is the intended architecture. The current `JointNet` in
-`utils/core/model.py` is a **crop-only predecessor**: it predicts one binary
+This is the intended architecture. The new `utils/full_frame/model.py` is a
+working first full-frame baseline: it shares a COCO-pretrained ResNet-50-FPN image pass
+across detection, per-instance masks, and a mask-pooled 128D ReID head. Its
+KITTI training entry point is `python train.py full-frame`. It still needs
+training, measured full-frame evaluation, and the selective mask optimization
+described below. The older `JointNet` in `utils/core/model.py` is a **crop-only
+predecessor**: it predicts one binary
 foreground mask and one embedding for an already selected crop. It cannot
 detect vehicles in a full frame or produce distinct masks for adjacent cars.
 The current VRU/VRAI metrics measure crop retrieval only.
@@ -69,23 +74,47 @@ Selective output changes the task definition: the system segments the
 MOTS benchmark, run the mask head on all detections; for the deployed
 single-target mode, report latency with one mask and with top-K fallback.
 
-For the first implementation, use a one-stage detection/instance-mask layout
-with a lightweight multiscale backbone and a per-instance ReID head. A
-CenterMask2-Lite-style detector/mask head with its V-19-Slim-DW backbone is
-the **first implementation target**: it already has a published compact
-detector and instance-mask design, leaving a 128D ReID head and mask-guided
-pooling to add. A YOLACT-style prototype-mask head is the next speed-oriented
-alternative if the per-proposal mask path proves costly. In either version,
-compute a coarse embedding for each detected instance and a refined embedding
-under the predicted mask only for selected candidates. Start with one vehicle
-class, then test whether small and large vehicles
-need separate detection classes.
+The first implemented baseline deliberately prioritizes a working architecture:
+COCO-pretrained Mask R-CNN ResNet-50-FPN v2 provides the full-frame detector
+and instance-mask decoder, and a mask-pooled 128D ReID head shares its FPN
+features. The COCO car and background predictors initialize the two-class
+heads. The ReID head pools under the model's **predicted mask** during both
+training and inference, so a ground-truth-mask training shortcut does not
+create a teacher/student mismatch. It computes a mask and embedding for each
+detected vehicle. The next
+functional milestones are real-data training, validation, a selected-target
+video, and a matched separate-model control. Coarse box embeddings and
+selective mask computation come after the all-instance version works.
 
-Do not assume a particular backbone or mask decoder is faster on the target
-device. Benchmark a slim VoVNet/CenterMask2-Lite configuration and a compact
-backbone variant at the same 640 × 640 input size before selecting one. The
-existing ShuffleNetV2 weights are useful initialization for a candidate, but
-the crop model checkpoint is not a trained full-frame detector.
+## Teacher first, compact student later
+
+The ResNet-50-FPN model is the **teacher candidate**, not the intended final
+edge model. Its detector and mask head start from COCO weights; the ReID head
+still needs identity supervision. KITTI MOTS provides within-video vehicle
+tracks for the initial joint training. Cross-drone ReID requires an additional
+stage with genuine cross-camera vehicle identities such as VRAI; KITTI track
+IDs alone do not establish cross-drone identity accuracy.
+
+Before distillation, measure the trained teacher's box AP, mask AP, ReID
+Rank-1/mAP, HOTA/AssA, and end-to-end latency on fixed held-out splits. Save
+the exact checkpoint and evaluation protocol. A smaller student can then
+learn from both the real labels and the teacher's outputs: matched boxes and
+scores for detection, soft instance masks for segmentation, and normalized
+128D embeddings or pairwise similarities for ReID. Compare the distilled
+student with the same small architecture trained without distillation, using
+the same data and training budget. This isolates whether the teacher helped.
+No teacher predictions from the final test set should enter student training.
+
+This staged plan follows established object-detection and vehicle-ReID
+distillation research. See [General Instance Distillation](https://openaccess.thecvf.com/content/CVPR2021/papers/Dai_General_Instance_Distillation_for_Object_Detection_CVPR_2021_paper.pdf)
+and [Viewpoint Robust Knowledge Distillation for Vehicle ReID](https://link.springer.com/article/10.1186/s13634-021-00767-x).
+
+Once that baseline is measured, compare smaller backbones or decoders such
+as ShuffleNetV2-FPN, CenterMask2-Lite, or YOLACT-style prototypes. Keep the
+data split, image resolution, and evaluation protocol fixed. The current
+`image_size: 640` setting preserves aspect ratio and caps the longest side;
+fixed 640 × 640 deployment and RPK conversion are separate checks. The
+crop model checkpoint is not a trained full-frame detector.
 
 ## Training labels already present and missing
 
@@ -144,8 +173,12 @@ input size, proposal limit, postprocessing, and hardware for every method.
 - [YOLACT (ICCV 2019)](https://openaccess.thecvf.com/content_ICCV_2019/papers/Bolya_YOLACT_Real-Time_Instance_Segmentation_ICCV_2019_paper.pdf): fast one-stage prototype masks; no ReID head in the original method.
 - [KITTI MOTS benchmark](https://www.cvlibs.net/datasets/kitti/eval_mots.php): full-frame masks and track IDs for cars, useful for unified training/evaluation but not aerial imagery.
 
-The first coding milestone is a full-frame forward pass that produces distinct
-vehicle boxes, instance masks, and embeddings from **one network**. Before
-training, convert full-frame annotations and verify a small batch visually.
-Then train/evaluate the detection and mask tasks, add ID losses, and compare
-mask-guided versus box/global pooling under the same trained weights.
+The first coding milestone now exists in `utils/full_frame/`: a full-frame
+forward pass produces distinct vehicle boxes, instance masks, and embeddings
+from **one shared network**. A synthetic training/inference smoke test runs via
+`python train.py full-frame-smoke`; the KITTI MOTS loader was checked against
+real compressed car-mask annotations. Once the image archive finishes, prepare
+it with `python prepare.py kitti`, inspect a real batch, and train with
+`python train.py full-frame`. Next implement held-out box/mask AP and KITTI
+tracking evaluation, then compare mask-guided versus box/global pooling and
+selective versus all-instance masking under the same trained weights.

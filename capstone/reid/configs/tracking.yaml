@@ -1,0 +1,42 @@
+# Fixed teacher weights; no retraining or VRAI test tuning in these experiments.
+cache: data/tracking/teacher_cache
+predictions: data/tracking/comparison
+metrics: metrics/tracking
+mcbyte_source: utils/vendor/McBytePlusPlus
+mcbyte_revision: be1bbc03f18e33e93e0a359bbcbfdfc4dc4ab6b9
+cutie_source: utils/vendor/Cutie
+cutie_revision: ec5cdd4cf16f75c73ad785a2f96fb97dbad4125a
+edgetam_weights: checkpoints/pretrained/edgetam.pt
+cutie_weights: checkpoints/pretrained/cutie-base-mega.pth
+cache_min_score: 0.1
+check_frames: 40  # exercises mask refresh at frame 25 and lost-track aging
+check_sequence: '0002'
+variants: [baseline, baseline_motion, mcbyte_no_masks, mcbyte_edgetam]
+mcbyte:
+  track_thresh: 0.3
+  track_buffer: 45  # upstream scales this by fps / 30; KITTI fps=10 -> 15 frames
+  cmc_method: sparseOptFlow
+  cmc_downscale: 4
+  cmc_interval: 1
+  reid_min_det_score: 0.3
+  reid_min_box_area: 100
+  reid_min_box_w: 10
+  reid_min_box_h: 10
+  reid_border_margin: 0
+  reid_min_frame_gap: 5
+  reid_sim_thresh: 0.7
+  reid_min_updates: 2
+  reid_new_max_len: 10
+  reid_reconnect_enabled: true
+  with_mask_removal: true
+  with_mask_update: true
+  mask_update_every_k_frames: 25
+selected:
+  sequence: '0010'
+  start_frame: 0
+  frames: 200
+  selection: largest  # click for a local desktop; largest works over SSH
+  click_xy: null  # [x, y] selects the predicted mask containing this point, without a GUI
+  fps: 10
+  cutie_max_internal_size: 480
+  output: data/videos/selected_cutie.mp4

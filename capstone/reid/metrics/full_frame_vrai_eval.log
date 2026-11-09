@@ -1,0 +1,18 @@
+VRAI local cross-camera holdout: 1223 query / 2199 gallery / 630 IDs; crop size 320; checkpoint epoch 8; device=cpu
+Embedded 250/1223 VRAI crops
+Embedded 500/1223 VRAI crops
+Embedded 750/1223 VRAI crops
+Embedded 1000/1223 VRAI crops
+Embedded 1223/1223 VRAI crops
+Embedded 250/2199 VRAI crops
+Embedded 500/2199 VRAI crops
+Embedded 750/2199 VRAI crops
+Embedded 1000/2199 VRAI crops
+Embedded 1250/2199 VRAI crops
+Embedded 1500/2199 VRAI crops
+Embedded 1750/2199 VRAI crops
+Embedded 2000/2199 VRAI crops
+Embedded 2199/2199 VRAI crops
+Full-frame KITTI teacher (mask pool): Rank-1=7.03%, mAP=5.64%
+Full-frame KITTI teacher (global pool): Rank-1=7.11%, mAP=6.08%
+Saved /home/megrad/Documents/GitHub/CSCI541/capstone/reid/metrics/full_frame_vrai_local.csv. Oracle object crops; not full-frame detection or official VRAI test.

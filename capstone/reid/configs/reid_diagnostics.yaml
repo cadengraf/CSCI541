@@ -1,0 +1,16 @@
+# Diagnostics use calibration identities and KITTI validation, never final VRAI.
+checkpoint: checkpoints/distilled_joint/joint.best.pt
+output: metrics/reid_diagnostics
+seed: 42
+calibration_identities: 64
+kitti_frames: 48
+kitti_frame_stride: 10
+train_identities: 16
+images_per_camera: 2
+overfit_steps: 500
+overfit_learning_rate: 0.001
+# Separate network diagnostic, no detection/mask losses or production saves.
+network_identities: 4
+network_steps: 50
+network_head_learning_rate: 0.0001
+network_backbone_learning_rate: 0.00001

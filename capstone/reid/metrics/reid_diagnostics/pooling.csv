@@ -1,0 +1,6 @@
+dataset,pooling,Rank1,mAP,queries,gallery
+VRAI calibration subset,global,42.51968503937008,44.19118307862934,127,217
+VRAI calibration subset,predicted,44.881889763779526,50.221593958072134,127,217
+KITTI GT-box temporal subset,global,70.58823529411765,74.13345641286817,34,72
+KITTI GT-box temporal subset,predicted,70.58823529411765,74.51344263195475,34,72
+KITTI GT-box temporal subset,ground_truth,73.52941176470588,77.49907771966595,34,72

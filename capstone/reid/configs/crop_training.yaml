@@ -1,0 +1,29 @@
+# Matched identity-crop training; full-frame preprocessing is unchanged.
+start_checkpoint: checkpoints/distilled_joint/joint.best.pt
+start_sha256: 6f7ac5fce462885a0ee0e33ae6b5b9997bf1db51672a2a4519c15e0d65b348e0
+base_config: configs/distill_joint.yaml
+output: metrics/crop_training
+checkpoint_dir: checkpoints/crop_training
+epochs: 4
+steps_per_epoch: 1000
+identities_per_batch: 4
+learning_rate: 1.0e-05
+backbone_learning_rate: 1.0e-06
+frozen_backbone_epochs: 0
+save_every_steps: 100
+seed: 42
+calibration_max_ids: null
+evaluate_kitti_after_train: true
+experiment_name: crop_training
+predictions_name: crop_training
+use_auxiliary_losses: true
+model_variants:
+  aspect_384:
+    crop_geometry: aspect
+    crop_size: 384
+  square_256:
+    crop_geometry: square
+    crop_size: 256
+warmstart_model_fields:
+- crop_geometry
+- crop_size

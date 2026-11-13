@@ -129,6 +129,12 @@ class CoDINOJoint(nn.Module):
         model = settings['model']
         self.reid = IdentityHead(model['embedding_dim'], identities,
                                  model['classifier_scale'], model['classifier_margin'])
+        self.reid_spatial_adapter = None
+        if model.get('reid_spatial_adapter', False):
+            from .reid_branch import SpatialReIDAdapter
+            # Preserve all existing initialization/RNG behavior in the control.
+            with torch.random.fork_rng():
+                self.reid_spatial_adapter = SpatialReIDAdapter(256)
         self.phase(0)
 
     def phase(self, epoch):
@@ -145,10 +151,8 @@ class CoDINOJoint(nn.Module):
         for index, image in enumerate(images):
             height, width = image.shape[-2:]
             spec = self.settings['model']
-            short = spec['crop_size'] if crop else spec['short_side']
-            maximum = spec['crop_size'] if crop else spec['max_side']
-            scale = min(short / min(height, width), maximum / max(height, width))
-            new_h, new_w = round(height * scale), round(width * scale)
+            from .preprocessing import resize_shape
+            new_h, new_w = resize_shape(height, width, spec, crop=crop)
             resized = F.interpolate(image[None], size=(new_h, new_w), mode='bilinear', align_corners=False)[0]
             flip = augment and bool(torch.rand(()) < 0.5)
             if flip:
@@ -197,7 +201,11 @@ class CoDINOJoint(nn.Module):
         car_labels = torch.full((len(rois),), COCO_CAR, dtype=torch.long, device=rois.device)
         output = self.detector._mask_forward(features, rois, car_labels)
         masks = self._refined_masks(output['stage_instance_preds'])
-        embeddings = self.reid(output['mask_feats'], None if global_pool else masks.sigmoid())
+        # Upstream mask_feats are raw shared encoder ROIs, NOT mask-head outputs.
+        identity_features = output['mask_feats']
+        if self.reid_spatial_adapter is not None:
+            identity_features = self.reid_spatial_adapter(identity_features)
+        embeddings = self.reid(identity_features, None if global_pool else masks.sigmoid())
         return embeddings, (output, masks)
 
     @torch.cuda.amp.autocast(enabled=False)

@@ -1,0 +1,12 @@
+# Validate selected preprocessing on the full calibration set, never final test.
+checkpoint: checkpoints/distilled_joint/joint.best.pt
+output: metrics/crop_validation
+seed: 42
+calibration_identities: null
+variants:
+- name: aspect_384
+  geometry: aspect
+  size: 384
+- name: square_256
+  geometry: square
+  size: 256

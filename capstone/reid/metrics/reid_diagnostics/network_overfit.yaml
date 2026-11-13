@@ -1,0 +1,44 @@
+checkpoint: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/checkpoints/distilled_joint/joint.best.pt
+config:
+  calibration_identities: 64
+  checkpoint: checkpoints/distilled_joint/joint.best.pt
+  images_per_camera: 2
+  kitti_frame_stride: 10
+  kitti_frames: 48
+  network_backbone_learning_rate: 1.0e-05
+  network_head_learning_rate: 0.0001
+  network_identities: 4
+  network_steps: 50
+  output: metrics/reid_diagnostics
+  overfit_learning_rate: 0.001
+  overfit_steps: 500
+  seed: 42
+  train_identities: 16
+records:
+- camera: '0001'
+  id: '00002470'
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00002470_0001_00000003.jpg
+- camera: '0002'
+  id: '00002470'
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00002470_0002_00000001.jpg
+- camera: '0001'
+  id: '00000606'
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00000606_0001_00000002.jpg
+- camera: '0002'
+  id: '00000606'
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00000606_0002_00000000.jpg
+- camera: '0001'
+  id: 00005852
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00005852_0001_00000008.jpg
+- camera: '0002'
+  id: 00005852
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00005852_0002_00000000.jpg
+- camera: '0001'
+  id: 00005208
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00005208_0001_00000009.jpg
+- camera: '0002'
+  id: 00005208
+  path: /home/megrad/Documents/GitHub/CSCI541/capstone/reid/data/aerial/vrai/images_train/00005208_0002_00000003.jpg
+scope: Training-only memorization, predicted masks, last 4 backbone blocks and ROI/ReID
+  path. No detection/mask loss. Not held-out performance.
+sha256: 6f7ac5fce462885a0ee0e33ae6b5b9997bf1db51672a2a4519c15e0d65b348e0

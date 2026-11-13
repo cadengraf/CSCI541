@@ -1,5 +1,49 @@
 # Vehicle detection, instance masks, and ReID
 
+## Matched crop training
+
+`python train.py compare-crops` trains aspect-384 versus square-256 identity
+crops with matched joint losses and update budgets. Full-frame preprocessing
+is unchanged. It evaluates both trained checkpoints under both inference crop
+policies. See [the run guide](docs/crop_training.md) and `configs/crop_training.yaml`.
+
+## Crop preprocessing check
+
+`python benchmark.py crop-diagnostics` compares aspect-preserving and square
+crops at 384 and 256 pixels on the same calibration identities, without training.
+See [the guide](docs/crop_diagnostics.md) and `configs/crop_diagnostics.yaml`.
+
+## Dedicated spatial ReID branch
+
+`python train.py compare-roi` compares raw shared encoder ROI features against
+a dedicated residual spatial ReID adapter, retaining predicted-mask pooling.
+Both arms use the same joint losses and schedule. Configure `configs/roi_reid.yaml`;
+see [the architecture and run guide](docs/roi_reid.md). The original `mask_feats`
+already contains raw encoder ROI features, not segmentation-decoder outputs.
+
+## Matched ReID-only versus joint continuation
+
+`python train.py compare-reid` runs both arms with identical origin, identity data
+and update budgets, changing only the KITTI auxiliary detection/mask losses.
+See [the comparison guide](docs/reid_balance.md) and `configs/reid_balance.yaml`.
+It resumes automatically and writes a calibration/KITTI HTML comparison.
+
+## Diagnose joint ReID
+
+`python benchmark.py reid-diagnostics` compares pooling and tests head memorization.
+`python train.py reid-overfit` checks a tiny batch through the real mask/ReID network.
+See [the diagnostic guide](docs/reid_diagnostics.md); settings live in
+`configs/reid_diagnostics.yaml`. These tests do not overwrite model checkpoints.
+
+## Transfer the specialist into the joint model
+
+`python train.py joint-distill` continues the joint checkpoint with frozen
+TransReID identity targets, while retaining KITTI box/mask supervision. It uses
+separate checkpoints and automatically evaluates after training. Configure
+`configs/distill_joint.yaml`; see [the transfer guide](docs/distill_joint.md)
+for losses, resume, outputs and the matched no-distillation control. The joint
+inference architecture remains a shared detector/mask/256D embedding network.
+
 ## Specialist vehicle ReID teacher
 
 MSINet's vehicle-trained checkpoint won the new calibration comparison and

@@ -1,0 +1,24 @@
+# Raw shared encoder ROIs versus a dedicated spatial ReID adapter.
+start_checkpoint: checkpoints/distilled_joint/joint.best.pt
+start_sha256: 6f7ac5fce462885a0ee0e33ae6b5b9997bf1db51672a2a4519c15e0d65b348e0
+base_config: configs/distill_joint.yaml
+output: metrics/roi_reid
+checkpoint_dir: checkpoints/roi_reid
+epochs: 4
+steps_per_epoch: 1000
+identities_per_batch: 4
+learning_rate: 1.0e-05
+backbone_learning_rate: 1.0e-06
+frozen_backbone_epochs: 0
+save_every_steps: 100
+seed: 42
+calibration_max_ids: null
+evaluate_kitti_after_train: true
+experiment_name: roi_reid
+predictions_name: roi_reid
+use_auxiliary_losses: true
+model_variants:
+  raw_roi:
+    reid_spatial_adapter: false
+  reid_adapter:
+    reid_spatial_adapter: true

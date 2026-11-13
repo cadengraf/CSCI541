@@ -9,9 +9,27 @@ from utils.benchmarking.benchmark import run
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", nargs="?", choices=("masks", "vru", "vru-masks", "vrai", "metrics", "kitti-mots", "kitti-mots-check", "kitti-mots-score", "teacher", "trackers", "trackers-check", "trackers-setup", "reid-teacher", "reid-teacher-final", "reid-teacher-setup"),
+    parser.add_argument("mode", nargs="?", choices=("masks", "vru", "vru-masks", "vrai", "metrics", "kitti-mots", "kitti-mots-check", "kitti-mots-score", "teacher", "trackers", "trackers-check", "trackers-setup", "reid-teacher", "reid-teacher-final", "reid-teacher-setup", "joint-distill", "joint-distill-control", "reid-diagnostics", "compare-reid", "compare-roi", "crop-diagnostics", "crop-validation", "compare-crops"),
                         help="evaluate masks, VRU/VRAI retrieval, or refresh metrics HTML")
     mode = parser.parse_args().mode
+    if mode == "compare-crops":
+        from utils.experiments.crop_training.command import run as compare_crops
+        return compare_crops(evaluate_only=True)
+    if mode in ("crop-diagnostics", "crop-validation"):
+        from utils.teacher.launcher import launch
+        return launch(mode)
+    if mode == "compare-roi":
+        from utils.experiments.roi_reid.command import run as compare_roi
+        return compare_roi(evaluate_only=True)
+    if mode == "compare-reid":
+        from utils.experiments.reid_balance.command import run as compare_reid
+        return compare_reid(evaluate_only=True)
+    if mode == "reid-diagnostics":
+        from utils.teacher.launcher import launch
+        return launch("reid-diagnostics")
+    if mode in ("joint-distill", "joint-distill-control"):
+        from utils.distillation.command import run as distill
+        return distill(mode + '-eval')
     if mode == "reid-teacher-setup":
         from utils.reid_teacher.setup import run as setup
         return setup()

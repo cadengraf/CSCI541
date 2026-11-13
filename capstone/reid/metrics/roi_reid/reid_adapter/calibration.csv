@@ -1,0 +1,3 @@
+model,pooling,Rank1,mAP,queries,gallery
+roi_reid_reid_adapter,mask,19.706840390879478,22.490222249964233,1228,2179
+roi_reid_reid_adapter,global,17.91530944625407,18.872126507162776,1228,2179

@@ -1,0 +1,10 @@
+# Inference-only ablation; no training or final-test evaluation.
+checkpoint: checkpoints/distilled_joint/joint.best.pt
+output: metrics/crop_diagnostics
+seed: 42
+calibration_identities: 64
+variants:
+  - {name: aspect_384, geometry: aspect, size: 384}
+  - {name: square_384, geometry: square, size: 384}
+  - {name: aspect_256, geometry: aspect, size: 256}
+  - {name: square_256, geometry: square, size: 256}

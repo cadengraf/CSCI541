@@ -186,6 +186,10 @@ def atomic_save(payload, destination):
 
 def validate_checkpoint(saved, settings, kitti=None, vrai=None):
     previous = saved['settings']
+    if previous.get('matched_reid') != settings.get('matched_reid'):
+        raise ValueError('Checkpoint matched continuation configuration differs')
+    if previous.get('distillation') != settings.get('distillation'):
+        raise ValueError('Checkpoint distillation configuration differs')
     for key in ('source', 'pretrained', 'data', 'model'):
         if previous[key] != settings[key]:
             raise ValueError(f'Teacher checkpoint {key} differs from configs/teacher.yaml')

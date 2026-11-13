@@ -3,6 +3,7 @@
 import csv
 from html import escape
 import gc
+from pathlib import Path
 import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
@@ -158,11 +159,12 @@ def run(final=False):
     return results
 
 
-def load_selected(device='cuda'):
+def load_selected(device='cuda', selection_path=None):
     """Frozen, normalized identity teacher and its required image preprocessing."""
     from torch import nn
     settings = read()
-    selection = yaml.safe_load((ROOT / 'checkpoints/reid_teacher/selected.yaml').read_text())
+    selection_path = ROOT / 'checkpoints/reid_teacher/selected.yaml' if selection_path is None else Path(selection_path)
+    selection = yaml.safe_load(selection_path.read_text())
     if not selection['finalized_selection']:
         raise ValueError('Teacher selection is provisional')
     for key, digest in selection['calibration_manifests'].items():

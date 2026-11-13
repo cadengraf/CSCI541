@@ -1,0 +1,10 @@
+sequence,hardware,frames,mean_ms,median_ms,scope
+0002,NVIDIA GeForce RTX 4090,233,121.03377497019775,122.12484399788082,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0006,NVIDIA GeForce RTX 4090,270,118.33974866382994,116.89760050649056,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0007,NVIDIA GeForce RTX 4090,800,120.47401560872459,122.2361805048422,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0008,NVIDIA GeForce RTX 4090,390,119.67394292542639,121.45080749905901,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0010,NVIDIA GeForce RTX 4090,294,119.11434716306275,120.22740749671357,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0013,NVIDIA GeForce RTX 4090,340,109.64059029138298,107.79490249842638,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0014,NVIDIA GeForce RTX 4090,106,122.92334501851758,123.04239199875155,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0016,NVIDIA GeForce RTX 4090,209,119.01005916770895,121.15022000216413,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"
+0018,NVIDIA GeForce RTX 4090,339,123.53256574629636,124.4769240001915,"batch 1; PNG decode, AMP backbone/FP32 heads, tracking, RLE export"

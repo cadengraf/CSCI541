@@ -10,10 +10,12 @@ interface; files here implement their work.
 | `visualization/` | Render VisDrone video and select a target | `video.py`, `target_search.py` |
 | `crossdrone/` | BuckTales preparation, retrieval, and video | `data.py`, `retrieval.py`, `video.py` |
 | `benchmarking/` | Load comparison models, measure them, create charts | `benchmark.py`, `models.py`, `report.py` |
-| `experiments/` | Matched ReID-only versus joint training | `compare.py` |
+| `experiments/` | Matched ReID-only versus joint training | `crop_training/settings.py`, [crop training guide](../docs/crop_training.md); `roi_reid/settings.py`, [ROI adapter guide](../docs/roi_reid.md); shared trainer in `reid_balance/training.py`, [loss comparison guide](../docs/reid_balance.md) |
 | `full_frame/` | Shared vehicle detector, instance masks, 128D ReID head, KITTI and VRAI training and evaluation | `model.py`, `kitti.py`, `training.py`, `multiview.py` |
 | `teacher/` | Pretrained Co-DINO/RefineMask teacher with shared 256D ReID, clean KITTI/VRAI fine-tuning and evaluation | `model.py`, `training.py`, then [guide](../docs/teacher.md) |
 | `reid_teacher/` | Specialist vehicle ReID selection, TransReID fine-tuning and frozen teacher loader | `evaluation.py`, `model.py`, `training.py`, then [guide](../docs/reid_teacher.md) |
+| `distillation/` | Transfer specialist identity geometry into the existing joint network, plus a matched continuation control | `targets.py`, `losses.py`, `training.py`, then [guide](../docs/distill_joint.md) |
+| `diagnostics/` | Pooling ablations, oracle KITTI masks and train-only head/network overfit checks | `crops.py` ([crop guide](../docs/crop_diagnostics.md)), `reid.py`, `network.py` ([pooling/overfit guide](../docs/reid_diagnostics.md)) |
 | `tracking/` | Fixed-teacher tracker comparison, adapted McByte++/EdgeTAM, selected-object CUTIE MP4 | `comparison.py`, `mcbyte.py`, `video.py`, then [guide](../docs/tracking.md) |
 | `vendor/Co-DETR/` | Pinned upstream teacher source, fetched during setup and excluded from Git | Its own `README.md` |
 | `UAVidToolKit/` | Third-party UAVid tooling | Its own `README.md` |

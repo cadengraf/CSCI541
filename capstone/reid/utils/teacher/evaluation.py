@@ -27,8 +27,10 @@ def write_csv(path, rows):
     temporary.replace(path)
 
 
-def run():
+def run(experiment=None, calibration_only=False):
     settings, root = read()
+    if experiment is not None:
+        settings = experiment
     spec, tracking = settings['training'], settings['tracking']
     last = torch.load(resolve(root, spec['checkpoint']), map_location='cpu')
     if not last['finished']:
@@ -37,7 +39,8 @@ def run():
     del last
     path = resolve(root, spec['best_checkpoint'])
     saved = torch.load(path, map_location='cpu')
-    kitti, vrai, _, final = build(settings, root)
+    kitti, vrai, calibration, final = build(settings, root)
+    partition = calibration if calibration_only else final
     validate_checkpoint(saved, settings, kitti, vrai)
     if saved['run_id'] != run_id:
         raise ValueError('Best and last teacher checkpoints are from different runs')
@@ -51,16 +54,16 @@ def run():
     del saved
     output = resolve(root, tracking['metrics_root']).parent
     output.mkdir(parents=True, exist_ok=True)
-    print(f'Evaluating teacher selected at epoch {epoch}; final VRAI query/gallery', flush=True)
+    print(f'Evaluating teacher selected at epoch {epoch}; VRAI {"calibration" if calibration_only else "final"} query/gallery', flush=True)
     retrieval_rows = []
     for pooling in ('mask', 'global'):
-        scores = evaluate_retrieval(model, final, device, global_pool=pooling == 'global',
+        scores = evaluate_retrieval(model, partition, device, global_pool=pooling == 'global',
                                     mixed_precision=spec['mixed_precision'])
         retrieval_rows.append({'model': tracking['name'], 'pooling': pooling,
                                'Rank1': scores['rank1'] * 100, 'mAP': scores['map'] * 100,
                                'queries': scores['queries'], 'gallery': scores['gallery']})
         print(f'VRAI {pooling}: Rank-1 {scores["rank1"]:.2%}, mAP {scores["map"]:.2%}', flush=True)
-    write_csv(output / 'vrai.csv', retrieval_rows)
+    write_csv(output / ('calibration.csv' if calibration_only else 'vrai.csv'), retrieval_rows)
     data_root = resolve(root, settings['data']['kitti_root'])
     sequences = {f'{seq:04d}': len(list((data_root / 'training/image_02' / f'{seq:04d}').glob('*.png')))
                  for seq in settings['data']['val_sequences']}
@@ -100,11 +103,25 @@ def run():
     write_csv(output / 'timing.csv', timings)
     mots_rows = evaluate_mots(data_root, predictions_root, [name], sequences,
                               resolve(root, tracking['metrics_root']))
-    report(output, retrieval_rows, mots_rows, epoch, model)
+    report(output, retrieval_rows, mots_rows, epoch, model, calibration_only=calibration_only)
+    if 'distillation' in settings:
+        page = output / 'summary.html'
+        active = settings['distillation']['projection_weight'] > 0 or settings['distillation']['relation_weight'] > 0
+        title = 'Identity distillation experiment' if active else 'Matched continued-training control'
+        page.write_text(page.read_text() +
+            f'<h2>{title}</h2><p>Continued the pinned joint checkpoint using '
+            'KITTI box/mask/identity supervision and cached specialist embeddings on VRAI training images. '
+            'A training-only projection aligns embeddings; relational loss matches retrieval geometry. '
+            'The specialist and projection are absent from joint inference. '
+            f'Projection weight: {settings["distillation"]["projection_weight"]}; '
+            f'relation weight: {settings["distillation"]["relation_weight"]}. '
+            'Zero weights disable specialist supervision in the control. '
+            'See configs/distill_joint.yaml and training.csv for weights and budget. '
+            'The baseline tracker is used here; these are not McByte++ results.</p>')
     print(f'Report: {output / "summary.html"}', flush=True)
 
 
-def report(output, retrieval, mots, epoch, model):
+def report(output, retrieval, mots, epoch, model, calibration_only=False):
     def table(rows):
         heading = ''.join(f'<th>{escape(key)}</th>' for key in rows[0])
         body = ''.join('<tr>' + ''.join(f'<td>{value:.2f}</td>' if isinstance(value, float)
@@ -117,10 +134,12 @@ def report(output, retrieval, mots, epoch, model):
         '<style>body{font:16px system-ui;margin:40px;color:#172033}table{border-collapse:collapse}'
         'td,th{padding:12px;border-bottom:1px solid #ccd;text-align:right}</style>'
         f'<h1>Co-DINO-Inst ViT-L vehicle teacher</h1><p>{parameters:.1f}M parameters including the training '
-        f'identity classifier. Selected epoch: {epoch}, using VRAI calibration mAP.</p>'
-        '<h2>Held-out cross-camera retrieval</h2>' + table(retrieval) +
-        '<p>Same checkpoint, same final query/gallery; global versus mask pooling is an inference ablation. '
-        'The head was trained using masks. VRAI identities are separate from training and calibration.</p>'
+        f'identity classifier. Selected epoch: {epoch}, using VRAI calibration mAP.</p>' +
+        ('<h2>Calibration cross-camera retrieval</h2>' if calibration_only else '<h2>Held-out cross-camera retrieval</h2>') + table(retrieval) +
+        ('<p>Calibration was used for checkpoint selection; these are development results, not final test. '
+         'Global versus predicted-mask pooling uses identical weights and query/gallery.</p>' if calibration_only else
+         '<p>Same checkpoint, same final query/gallery; global versus mask pooling is an inference ablation. '
+         'The head was trained using masks. VRAI identities are separate from training and calibration.</p>') +
         '<h2>Conventional KITTI MOTS validation</h2>' + table(mots) +
         '<p>All validation frames, official TrackEval mask matching. TP/(TP+FN) is mask-based recall; '
         'it does not isolate box detection recall. Timing in timing.csv includes decode, network, '

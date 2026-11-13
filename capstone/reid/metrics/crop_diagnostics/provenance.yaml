@@ -1,0 +1,91 @@
+calibration_ids:
+- '00000155'
+- '00000420'
+- '00000446'
+- 00000491
+- '00000506'
+- 00000778
+- 00000824
+- 00001328
+- 00001379
+- 00001490
+- '00001540'
+- 00001685
+- '00001764'
+- 00001809
+- 00001882
+- 00001968
+- 00001994
+- 00002197
+- '00002434'
+- 00002791
+- '00003062'
+- 00003192
+- '00003233'
+- 00003961
+- 00004194
+- '00004361'
+- '00004435'
+- '00004502'
+- '00004526'
+- 00004581
+- 00004682
+- 00004803
+- 00005048
+- '00005646'
+- 00005695
+- 00005975
+- '00006017'
+- '00006207'
+- 00006294
+- '00007101'
+- '00007126'
+- '00007220'
+- '00007447'
+- '00007526'
+- '00007656'
+- 00007697
+- 00007828
+- 00008108
+- 00008132
+- 00009037
+- 00009098
+- 00009807
+- 00009858
+- 00009996
+- 00010877
+- '00011454'
+- '00011577'
+- '00011704'
+- 00011880
+- '00012216'
+- '00012516'
+- 00012596
+- 00012826
+- 00012852
+checkpoint_epoch: 8
+checkpoint_sha256: 6f7ac5fce462885a0ee0e33ae6b5b9997bf1db51672a2a4519c15e0d65b348e0
+config:
+  calibration_identities: 64
+  checkpoint: checkpoints/distilled_joint/joint.best.pt
+  output: metrics/crop_diagnostics
+  seed: 42
+  variants:
+  - geometry: aspect
+    name: aspect_384
+    size: 384
+  - geometry: square
+    name: square_384
+    size: 384
+  - geometry: aspect
+    name: aspect_256
+    size: 256
+  - geometry: square
+    name: square_256
+    size: 256
+hardware: NVIDIA GeForce RTX 4090
+manifests:
+  vrai_calibration_gallery: 5fb5afa70d6b308800ce9fb110c829d7d97870c5e45fef0a04dcc40c83743e10
+  vrai_calibration_query: 1a74ba396a93287b6f00b9a4d317484eb6ce8c383338f3f37e9ed82fb34609bb
+  vrai_train: 0c17e2fe600de94becae0d872e8619f5af38cbf22ff85d1bf7e2d9fb821b3c20
+torch_version: 1.13.1+cu117

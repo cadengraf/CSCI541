@@ -79,9 +79,60 @@ def check():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=('check', 'train', 'eval', 'tracking-cache', 'tracking-cache-check', 'tracking-cache-selected'))
+    parser.add_argument('mode', choices=('check', 'train', 'eval', 'tracking-cache', 'tracking-cache-check', 'tracking-cache-selected',
+        'crop-train-aspect_384', 'crop-train-square_256', 'crop-train-aspect_384-check', 'crop-train-square_256-check',
+        'crop-train-aspect_384-eval', 'crop-train-square_256-eval', 'crop-train-cross-eval', 'roi-reid-raw_roi', 'roi-reid-reid_adapter', 'roi-reid-raw_roi-check', 'roi-reid-reid_adapter-check',
+        'roi-reid-raw_roi-eval', 'roi-reid-reid_adapter-eval', 'reid-balance-reid_only', 'reid-balance-joint', 'reid-balance-reid_only-check', 'reid-balance-joint-check',
+        'reid-balance-reid_only-eval', 'reid-balance-joint-eval', 'reid-overfit', 'reid-diagnostics', 'crop-diagnostics', 'crop-validation', 'joint-distill', 'joint-distill-check', 'joint-distill-control', 'joint-distill-eval', 'joint-distill-control-eval'))
     mode = parser.parse_args().mode
-    if mode.startswith('tracking-cache'):
+    if mode == 'crop-train-cross-eval':
+        from utils.experiments.crop_training.evaluation import cross_evaluate
+        cross_evaluate()
+    elif mode.startswith('crop-train-'):
+        from utils.experiments.crop_training.settings import read as crop_settings
+        arm = mode.removeprefix('crop-train-').split('-')[0]
+        if mode.endswith('-eval'):
+            from .evaluation import run
+            run(experiment=crop_settings(arm)[0], calibration_only=True)
+        else:
+            from utils.experiments.reid_balance.training import train as compare
+            compare(arm, check=mode.endswith('-check'), settings_reader=crop_settings)
+    elif mode in ('crop-diagnostics', 'crop-validation'):
+        from utils.diagnostics.crops import run
+        run(full=mode == 'crop-validation')
+    elif mode.startswith('roi-reid-'):
+        from utils.experiments.roi_reid.settings import read as roi_settings
+        arm = mode.removeprefix('roi-reid-').split('-')[0]
+        if mode.endswith('-eval'):
+            from .evaluation import run
+            run(experiment=roi_settings(arm)[0], calibration_only=True)
+        else:
+            from utils.experiments.reid_balance.training import train as compare
+            compare(arm, check=mode.endswith('-check'), settings_reader=roi_settings)
+    elif mode.startswith('reid-balance-'):
+        arm = mode.removeprefix('reid-balance-').split('-')[0]
+        if mode.endswith('-eval'):
+            from utils.experiments.reid_balance.settings import read as balance_settings
+            from .evaluation import run
+            run(experiment=balance_settings(arm)[0], calibration_only=True)
+        else:
+            from utils.experiments.reid_balance.training import train as balance
+            balance(arm, check=mode.endswith('-check'))
+    elif mode == 'reid-overfit':
+        from utils.diagnostics.network import overfit_network
+        overfit_network()
+    elif mode == 'reid-diagnostics':
+        from utils.diagnostics.reid import run
+        run()
+    elif mode.startswith('joint-distill'):
+        if mode.endswith('-eval'):
+            from utils.distillation.settings import read as distilled_settings
+            from .evaluation import run
+            run(experiment=distilled_settings(control='control' in mode)[0])
+        else:
+            from utils.distillation.training import train as distill
+            distill(check=mode.endswith('-check'), control='control' in mode)
+    elif mode.startswith('tracking-cache'):
         from utils.tracking.cache import export
         export(check=mode.endswith('-check'), selected=mode.endswith('-selected'))
     elif mode == 'check':

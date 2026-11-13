@@ -154,9 +154,24 @@ def main():
     parser = argparse.ArgumentParser(
         description="Train and evaluate the joint segmentation + ReID model using config.yaml."
     )
-    parser.add_argument("mode", nargs="?", choices=("compare", "compare-vehicles", "warmstart-vehicles", "visdrone", "full-frame", "full-frame-smoke", "full-frame-check", "full-frame-eval", "full-frame-vrai", "full-frame-multiview", "full-frame-multiview-check", "full-frame-multiview-eval", "full-frame-multiview-vrai", "kitti-mots", "teacher-setup", "teacher-check", "teacher", "reid-teacher", "reid-teacher-check"),
+    parser.add_argument("mode", nargs="?", choices=("compare", "compare-vehicles", "warmstart-vehicles", "visdrone", "full-frame", "full-frame-smoke", "full-frame-check", "full-frame-eval", "full-frame-vrai", "full-frame-multiview", "full-frame-multiview-check", "full-frame-multiview-eval", "full-frame-multiview-vrai", "kitti-mots", "teacher-setup", "teacher-check", "teacher", "reid-teacher", "reid-teacher-check", "joint-distill", "joint-distill-check", "joint-distill-control", "reid-overfit", "compare-reid", "compare-reid-check", "compare-roi", "compare-roi-check", "compare-crops", "compare-crops-check"),
                         help="optional matched comparison or separate VisDrone training")
     options = parser.parse_args()
+    if options.mode in ("compare-crops", "compare-crops-check"):
+        from utils.experiments.crop_training.command import run as compare_crops
+        return compare_crops(check=options.mode.endswith("-check"))
+    if options.mode in ("compare-roi", "compare-roi-check"):
+        from utils.experiments.roi_reid.command import run as compare_roi
+        return compare_roi(check=options.mode.endswith("-check"))
+    if options.mode in ("compare-reid", "compare-reid-check"):
+        from utils.experiments.reid_balance.command import run as compare_reid
+        return compare_reid(check=options.mode.endswith("-check"))
+    if options.mode == "reid-overfit":
+        from utils.teacher.launcher import launch
+        return launch("reid-overfit")
+    if options.mode and options.mode.startswith("joint-distill"):
+        from utils.distillation.command import run as distill
+        return distill(options.mode)
     if options.mode in ("reid-teacher", "reid-teacher-check"):
         from utils.reid_teacher.training import train as specialist
         return specialist(check=options.mode.endswith('-check'))

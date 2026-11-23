@@ -1,0 +1,60 @@
+# Experimental global resolver; current recovery-budget test has not qualified this mode.
+# Device is always auto; live Co-DINO uses the existing CUDA teacher environment automatically.
+source: data/kitti_mots/training/image_02/0010
+output: data/videos/vehicle_global_experimental
+camera: kitti_0010
+start_frame: 0
+frames: 200
+fps: 10
+cpu_threads: 4
+device: auto
+checkpoint_every: 25
+select: largest
+detector:
+  backend: codino
+  checkpoint: checkpoints/teacher/co_dino_joint.best.pt
+  cache: data/tracking/teacher_cache
+  score_threshold: 0.3
+reid:
+  selection: checkpoints/reid_teacher/selected.yaml
+  batch_size: 8
+quality:
+  min_score: 0.7
+  min_side: 24
+  border: 2
+  min_mask_fraction: 0.2
+  max_box_overlap: 0.5
+association:
+  # V1 comparison keys; the tracklet engine uses the local subsection for continuity.
+  active_gap: 2
+  active_similarity: 0.65
+  active_iou: 0.05
+  active_margin: 0.04
+  # Lost-identity recovery and trusted global appearance memory.
+  recovery_similarity: 0.82
+  reference_floor: 0.7
+  recovery_margin: 0.08
+  recovery_hits: 3
+  pending_iou: 0.05
+  new_identity_max: 0.55
+  confirm_hits: 3
+  tentative_age: 5
+  memory_hits: 4
+  memory_similarity: 0.85
+  memory_margin: 0.1
+  recent_size: 8
+  engine: tracklets
+  # Reuse the existing local tracker settings; global margins cannot break these tracks.
+  local:
+    max_age: 15
+    appearance_weight: 0.5
+    min_iou: 0.05
+    min_cosine: 0.7
+    max_center_distance: 2.0
+    max_match_cost: 0.8
+    feature_momentum: 0.9
+  version: 2
+evaluation:
+  truth: null
+  target_truth_id: null
+  min_mask_iou: 0.5

@@ -6,3 +6,7 @@ PyYAML
 gdown
 matplotlib
 requests
+
+# Tracking/evaluation dependencies in the modern environment.
+-r requirements/tracking.txt
+-r requirements/cityflow.txt

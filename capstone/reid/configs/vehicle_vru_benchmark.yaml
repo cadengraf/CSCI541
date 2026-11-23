@@ -1,0 +1,14 @@
+# One command: ../.venv/bin/python benchmark.py vehicle-vru
+train_manifest: data/aerial/vru/train.csv
+query_manifest: data/aerial/vru/query.csv
+gallery_manifest: data/aerial/vru/gallery.csv
+output: metrics/vehicle_vru_benchmark
+state_root: data/vehicle_vru_benchmark
+device: auto
+cpu_threads: 4
+batch_size: 32
+checkpoint_batches: 100
+models:
+  original: checkpoints/reid_teacher/selected.yaml
+  degradation: checkpoints/vehicle_encoder_benchmark/degradation.yaml
+  pretrained: checkpoints/vehicle_vru_benchmark/pretrained.yaml

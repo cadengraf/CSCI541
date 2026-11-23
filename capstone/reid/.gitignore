@@ -1,2 +1,17 @@
-checkpoints/
-data/
+# Local datasets, weights, resumable states and generated experiment output.
+/checkpoints/
+/data/
+/metrics/**
+!/metrics/README.md
+/milestones.html
+*.log
+*.mp4
+*.npz
+*.pt
+*.pth
+
+# Config YAML, requirements TXT and source HTML templates belong in Git.
+!/config.yaml
+!/configs/*.yaml
+!/requirements*.txt
+!/requirements/*.txt

@@ -1,0 +1,6 @@
+# Install only in capstone/.rfdetr-env; keep the existing shared Torch binaries.
+rfdetr[train]==1.12.1
+pytorch_lightning==2.6.6
+torchmetrics[detection]==1.8.2
+faster-coco-eval==1.8.1
+opencv-python-headless==4.14.0.94

@@ -1,10 +1,17 @@
 .venv/
 .teacher-env/
-capstone/reid/utils/vendor/Co-DETR/
-capstone/reid/utils/vendor/McBytePlusPlus/
-capstone/reid/utils/vendor/Cutie/
-capstone/reid/utils/vendor/TransReID/
+.rfdetr-env/
 *.onnx
 *.zip
 *.jpg
 *.pyc
+*.yaml
+*.log
+*.csv
+*.txt
+*.mp4
+*.html
+
+# Pinned upstream repositories are installed locally, never vendored in Git.
+capstone/reid/utils/vendor/
+__pycache__/

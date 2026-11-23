@@ -1,0 +1,69 @@
+# Run/resume: ../.venv/bin/python train.py aerial
+base_config: configs/reid_teacher.yaml
+warmstart: checkpoints/reid_teacher/transreid.best.pt
+warmstart_sha256: 1b28450cfb5e6c4f4ff45f5bc1dc66277993c8baad7a79dc926bd00089b06e1c
+output: metrics/aerial_training
+state_root: data/aerial_training
+checkpoint_dir: checkpoints/aerial_training
+device: auto
+cpu_threads: 4
+seed: 42
+data:
+  vrai_train: data/aerial/vrai/train_disjoint.csv
+  vrai_query: data/aerial/vrai/calibration_query.csv
+  vrai_gallery: data/aerial/vrai/calibration_gallery.csv
+  vrai_test_query: data/aerial/vrai/query.csv
+  vrai_test_gallery: data/aerial/vrai/gallery.csv
+  vru_train: data/aerial/vru/train.csv
+  vru_test_query: data/aerial/vru/query.csv
+  vru_test_gallery: data/aerial/vru/gallery.csv
+vru_development_identities: 708
+audit:
+  workers: 4
+  checkpoint_images: 2000
+  near_duplicate_max_gray_mae: 1.0
+  near_duplicate_max_aspect_error: 0.02
+  flat_std_floor: 2.0
+training:
+  epochs: 20
+  steps_per_epoch: 1500
+  identities_per_domain: 4
+  images_per_identity: 4
+  classifier_warmup_epochs: 1
+  learning_rate: 0.00001
+  classifier_learning_rate: 0.0001
+  weight_decay: 0.0001
+  triplet_margin: 0.3
+  label_smoothing: 0.1
+  mixed_precision: true
+  checkpoint_steps: 250
+  seed: 42
+augmentation:
+  probability: 0.35
+  crop_scale: [0.9, 1.1]
+  translation: 0.05
+  downsample_probability: 0.5
+  short_side: [32, 160]
+  blur_probability: 0.2
+  blur_radius: [0.2, 1.0]
+  jpeg_probability: 0.2
+  jpeg_quality: [60, 95]
+mining:
+  samples_per_identity: 4
+  top_k: 20
+  hard_batch_probability: 0.5
+  hard_identities_per_domain: 2
+selection:
+  checkpoint_metric: macro_mean_development_map
+  false_acceptance_budget: 0.01
+  test_evaluation: disabled
+variants:
+  mixed_baseline: {augmentation: false, hard_sampling: false, metric: triplet}
+  mixed_degradation: {augmentation: true, hard_sampling: false, metric: triplet}
+  mixed_hard_sampling: {augmentation: false, hard_sampling: true, metric: triplet}
+  mixed_adasp: {augmentation: false, hard_sampling: false, metric: adasp}
+msinet_reference:
+  checkpoint: data/aerial/vru/baselines/msinet_vru_clean.pth
+  sha256: 3b31ed0410c7901aa26aa603c75f3e6e7519d6c9702a6bba7a0585f9b0f66962
+  archived_scores: metrics/vru_benchmark.csv
+  development_caveat: Author checkpoint may have seen VRU training identities used for our new development split; never use it for development model selection.

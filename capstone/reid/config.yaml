@@ -1,5 +1,5 @@
 # Run `python train.py` from this directory. Paths are relative to this file.
-# Read ARCHITECTURE.md for the model and command call paths.
+# Read docs/architecture.md for the model and command call paths.
 # Training reads the top-level settings and `sources` below. Other named
 # sections configure prepare.py, demo.py, and benchmark.py.
 reid_only: false            # joint identity and VOC mask training

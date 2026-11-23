@@ -33,7 +33,9 @@ def train(arm, check=False, settings_reader=read):
         raise RuntimeError('This experiment requires CUDA')
     torch.manual_seed(cfg['seed'])
     kitti, vrai, calibration, _ = build(settings, root)
-    order = pair_order(settings, 0, len(kitti))
+    vrai_only = cfg.get('training_mode', 'joint') == 'vrai_only'
+    if not vrai_only:
+        pair_order(settings, 0, len(kitti))
     offset = len(kitti.identity_to_label)
     origin = root/cfg['start_checkpoint']
     if sha256(origin) != cfg['start_sha256']:
@@ -106,31 +108,33 @@ def train(arm, check=False, settings_reader=read):
     for epoch in epochs:
         print(f'{arm} epoch {epoch+1}: {model.phase(epoch)}', flush=True)
         model.train()
-        order = pair_order(settings, epoch, len(kitti))
+        order = list(range(cfg['steps_per_epoch'])) if vrai_only else pair_order(settings, epoch, len(kitti))
         if check:
-            order = [max(range(len(kitti)), key=lambda i: sum(len(kitti.annotations[k]) for k in kitti.pairs[i]))]
+            order = [0] if vrai_only else [max(range(len(kitti)), key=lambda i: sum(len(kitti.annotations[k]) for k in kitti.pairs[i]))]
             torch.cuda.reset_peak_memory_stats()
         for step, pair_index in enumerate(order, 1):
             if not check and epoch == epoch_start and step <= step_start: continue
             factor = .1+.9*(1+math.cos(math.pi*(epoch+step/cfg['steps_per_epoch'])/cfg['epochs']))/2
             for group, rate in zip(optimizer.param_groups, (spec['learning_rate'], spec['backbone_learning_rate'])):
                 group['lr'] = factor*rate
-            images, targets = _pair_collate([kitti[pair_index]])
-            with stage_rng(settings, epoch, step, 1):
-                optimizer.zero_grad(set_to_none=True)
-                losses = model.kitti_losses([image.cuda() for image in images], targets)
-                identities = {k: v for k, v in losses.items() if k in ('loss_identity', 'loss_triplet')}
-                if len(identities) != 2:
-                    raise RuntimeError('KITTI update must contain identity and triplet loss')
-                auxiliary = {k: v for k, v in losses.items() if k not in identities}
-                identity_loss = total_loss(identities, spec['reid_weight'])
-                auxiliary_loss = total_loss(auxiliary, spec['reid_weight'])
-                selected = identity_loss + auxiliary_loss if cfg.get('use_auxiliary_losses', arm == 'joint') else identity_loss
-                updated = backward_step(model, optimizer, scaler, selected)
-                skipped += int(not updated)
-                if check and not updated: raise RuntimeError('KITTI smoke update overflowed')
-                identity_value, auxiliary_value = identity_loss.item(), auxiliary_loss.item()
-            del images, targets, losses, identities, auxiliary, identity_loss, auxiliary_loss, selected
+            identity_value = auxiliary_value = None
+            if not vrai_only:
+                images, targets = _pair_collate([kitti[pair_index]])
+                with stage_rng(settings, epoch, step, 1):
+                    optimizer.zero_grad(set_to_none=True)
+                    losses = model.kitti_losses([image.cuda() for image in images], targets)
+                    identities = {k: v for k, v in losses.items() if k in ('loss_identity', 'loss_triplet')}
+                    if len(identities) != 2:
+                        raise RuntimeError('KITTI update must contain identity and triplet loss')
+                    auxiliary = {k: v for k, v in losses.items() if k not in identities}
+                    identity_loss = total_loss(identities, spec['reid_weight'])
+                    auxiliary_loss = total_loss(auxiliary, spec['reid_weight'])
+                    selected = identity_loss + auxiliary_loss if cfg.get('use_auxiliary_losses', arm == 'joint') else identity_loss
+                    updated = backward_step(model, optimizer, scaler, selected)
+                    skipped += int(not updated)
+                    if check and not updated: raise RuntimeError('KITTI smoke update overflowed')
+                    identity_value, auxiliary_value = identity_loss.item(), auxiliary_loss.item()
+                del images, targets, losses, identities, auxiliary, identity_loss, auxiliary_loss, selected
             with stage_rng(settings, epoch, step, 2):
                 crops, labels = vrai.sample(random.Random(seed_for(settings, epoch, step, 2)), spec['identities_per_batch'])
                 optimizer.zero_grad(set_to_none=True)
@@ -148,13 +152,13 @@ def train(arm, check=False, settings_reader=read):
                                    for p in model.reid_spatial_adapter.parameters())
                 vrai_value = loss.item()
             del crops, labels, embeddings, loss
-            key = fingerprint(kitti, pair_index, settings, epoch, step)
+            key = f'vrai_{seed_for(settings, epoch, step, 2)}' if vrai_only else fingerprint(kitti, pair_index, settings, epoch, step)
             if check:
-                print(f'{arm}: both updates passed; batch {key}; identity {identity_value:.3f}, auxiliary {auxiliary_value:.3f}, '
+                print(f'{arm}: {"VRAI update" if vrai_only else "both updates"} passed; batch {key}; identity {identity_value}, auxiliary {auxiliary_value}, '
                       f'VRAI {vrai_value:.3f}; peak {torch.cuda.max_memory_allocated()/2**30:.2f} GiB', flush=True)
             elif step % 25 == 0 or step == len(order):
-                print(f'{arm} {epoch+1}/{cfg["epochs"]} step {step}/{len(order)}: identity {identity_value:.3f}, '
-                      f'auxiliary {auxiliary_value:.3f}, VRAI {vrai_value:.3f}', flush=True)
+                print(f'{arm} {epoch+1}/{cfg["epochs"]} step {step}/{len(order)}: identity {identity_value}, '
+                      f'auxiliary {auxiliary_value}, VRAI {vrai_value:.3f}', flush=True)
                 append(root/spec['log'], dict(run_id=run_id, event='train', epoch=epoch+1, step=step, batch_key=key,
                     kitti_identity_loss=identity_value, kitti_auxiliary_loss=auxiliary_value, vrai_loss=vrai_value, skipped_updates=skipped))
             if not check and step % spec['save_every_steps'] == 0:

@@ -1,0 +1,3 @@
+# Add to the existing capstone/.venv; supplied evaluator uses motmetrics.
+motmetrics==1.4.0
+pandas>=2.2

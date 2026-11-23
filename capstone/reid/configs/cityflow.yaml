@@ -1,0 +1,44 @@
+# Full run/resume: ../.venv/bin/python benchmark.py cityflow
+dataset_root: /home/megrad/Downloads/AICity22_Track1_MTMC_Tracking
+split: validation
+scenes: [S02, S05]
+output: metrics/cityflow
+state_root: data/cityflow
+reference_selection: metrics/vehicle_reference/selection.pt
+base_config: configs/reid_teacher.yaml
+source_thresholds: metrics/vehicle_reference/thresholds.yaml
+models: [original, mixed_adasp, msinet]
+device: auto
+cpu_threads: 4
+batch_size: 32
+checkpoint_frames: 300
+detections:
+  file: det/det_yolo3.txt
+  minimum_score: 0.3
+  minimum_side: 12
+  nms_iou: 0.6
+quality:
+  minimum_score: 0.7
+  minimum_side: 24
+  maximum_overlap_fraction: 0.5
+local:
+  max_age: 15
+  appearance_weight: 0.5
+  min_iou: 0.05
+  min_cosine: 0.7
+  max_center_distance: 2.0
+  max_match_cost: 0.8
+  feature_momentum: 0.9
+memory:
+  min_samples: 3
+  max_samples: 8
+  sample_gap: 2
+  min_span: 4
+  coherence: 0.85
+  new_identity_max: 0.55
+  recent_size: 8
+  write_similarity: 0.85
+  write_margin: 0.1
+review:
+  seconds_per_camera: 12
+  output_fps: 10

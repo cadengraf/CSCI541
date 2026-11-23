@@ -1,0 +1,55 @@
+protocol: kitti_mots_standard_val_v1
+sequences:
+- 2
+- 6
+- 7
+- 8
+- 10
+- 13
+- 14
+- 16
+- 18
+data_root: data/kitti_mots
+cache: data/tracking/teacher_cache
+features: data/vehicle_benchmark/specialist
+predictions: data/vehicle_benchmark/tracklet_stable_predictions
+output: metrics/vehicle_benchmark_tracklets_stable
+pipeline_config: configs/vehicle_reid_experimental.yaml
+cpu_threads: 4
+cpu_workers: 3
+checkpoint_every: 25
+score_threshold: 0.3
+min_mask_pixels: 10
+recovery_window: 10
+cross_camera: true
+methods:
+- bytetrack
+- ocsort
+- legacy_joint
+- legacy_specialist
+- memory_specialist
+- tracklet_joint
+- tracklet_specialist
+source:
+  bytetrack:
+    repository: https://github.com/FoundationVision/ByteTrack.git
+    directory: utils/vendor/ByteTrack
+    revision: d1bf0191adff59bc8fcfeaa0b33d3d1642552a99
+  ocsort:
+    repository: https://github.com/noahcao/OC_SORT.git
+    directory: utils/vendor/OC_SORT
+    revision: 8462e7e729a93ccd3bd995c0a79a890336cb3a0b
+bytetrack:
+  track_thresh: 0.3
+  track_buffer: 45
+  match_thresh: 0.8
+  mot20: false
+ocsort:
+  det_thresh: 0.3
+  max_age: 15
+  min_hits: 3
+  iou_threshold: 0.3
+  delta_t: 3
+  inertia: 0.2
+  use_byte: true
+candidate: tracklet_specialist

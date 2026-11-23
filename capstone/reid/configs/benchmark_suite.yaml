@@ -1,0 +1,26 @@
+# One user-launched evaluation suite. Change run for a new experiment.
+run: joint_square_256_v1
+output: metrics/benchmark_suite
+state_root: data/benchmark_suite
+device: auto
+continue_on_error: true
+retain_completed_state: false  # remove only finished suite feature/replay caches
+joint_checkpoint: checkpoints/crop_training/square_256.best.pt
+joint_last_checkpoint: checkpoints/crop_training/square_256.last.pt
+# Hash these inputs as well as source/configs; each evaluator also audits its data.
+inputs:
+  - checkpoints/reid_teacher/selected.yaml
+  - checkpoints/reid_teacher/transreid.best.pt
+  - checkpoints/aerial_training/*/best.pt
+  - data/aerial_training/prepared.yaml
+  - data/aerial_training/*.csv
+  - data/aerial/vrai/*.csv
+  - data/aerial/vru/*.csv
+stages:
+  - {id: joint, command: joint, enabled: true, depends: []}
+  - {id: aerial, command: aerial, config: configs/aerial_benchmark.yaml, enabled: true, depends: []}
+  - {id: transfer, command: aerial-transfer, config: configs/aerial_transfer.yaml, enabled: true, depends: [aerial]}
+  - {id: reference, command: vehicle-reference, config: configs/vehicle_reference.yaml, enabled: true, depends: [transfer]}
+  - {id: recovery, command: vehicle-recovery, config: configs/vehicle_recovery.yaml, enabled: true, depends: []}
+  - {id: joint_recovery, command: joint-recovery, enabled: true, depends: [joint, recovery]}
+  - {id: cityflow, command: cityflow, config: configs/cityflow.yaml, enabled: true, depends: [reference]}

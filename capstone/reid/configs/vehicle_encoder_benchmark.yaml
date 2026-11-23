@@ -1,0 +1,26 @@
+# One command: ../.venv/bin/python benchmark.py vehicle-encoder
+# No threshold search: both encoders use identical association and quality settings.
+protocol: kitti_mots_standard_val_v1
+sequences: [2, 6, 7, 8, 10, 13, 14, 16, 18]
+data_root: data/kitti_mots
+cache: data/tracking/teacher_cache
+original_features: data/vehicle_benchmark/specialist
+features: data/vehicle_encoder_benchmark/degradation_features
+pipeline_config: configs/vehicle_reid_query_pool.yaml
+candidate_checkpoint: checkpoints/appearance_training/degradation/last.pt
+candidate_selection: checkpoints/vehicle_encoder_benchmark/degradation.yaml
+candidate_pipeline: configs/vehicle_reid_degradation.yaml
+output: metrics/vehicle_encoder_benchmark
+state_root: data/vehicle_encoder_benchmark
+cpu_threads: 4
+cpu_workers: 1
+checkpoint_every: 25
+score_threshold: 0.3
+min_mask_pixels: 10
+recovery_window: 10
+small_short_side: 48
+live:
+  enabled: true
+  source: data/kitti_mots/training/image_02/0010
+  frames: 100
+  output: data/videos/vehicle_encoder_benchmark

@@ -1,0 +1,50 @@
+# All paths are relative to capstone/reid. Run with capstone/.venv/bin/python.
+source: data/kitti_mots/training/image_02/0010  # MP4 or directory of numbered PNG/JPG frames
+output: data/videos/vehicle_reid
+camera: kitti_0010
+start_frame: 0
+frames: 200
+fps: 10
+cpu_threads: 4
+device: auto
+checkpoint_every: 25
+# null tracks every vehicle; [x,y] selects a mask on the first processed frame.
+# "largest" selects the largest reliable mask. Selection persists in state.pt.
+select: largest
+detector:
+  backend: maskrcnn  # live CPU/CUDA default; codino requires the teacher CUDA environment
+  checkpoint: checkpoints/kitti_mots/joint.pt
+  cache: data/tracking/teacher_cache
+  score_threshold: 0.3
+reid:
+  selection: checkpoints/reid_teacher/selected.yaml
+  batch_size: 8
+quality:
+  min_score: 0.7
+  min_side: 24
+  border: 2
+  min_mask_fraction: 0.2
+  max_box_overlap: 0.5
+association:
+  active_gap: 2
+  active_similarity: 0.65
+  active_iou: 0.05  # local continuation only; recovery has NO image-coordinate gate
+  active_margin: 0.04
+  recovery_similarity: 0.82
+  reference_floor: 0.70
+  recovery_margin: 0.08
+  recovery_hits: 3
+  pending_iou: 0.05
+  new_identity_max: 0.55
+  confirm_hits: 3
+  tentative_age: 5
+  memory_hits: 4
+  memory_similarity: 0.85
+  memory_margin: 0.10
+  recent_size: 8
+# These are conservative initial thresholds, not calibrated operating guarantees.
+evaluation:
+  # Optional KITTI MOTS annotations; read only AFTER association, never used for selection.
+  truth: null
+  target_truth_id: null
+  min_mask_iou: 0.5

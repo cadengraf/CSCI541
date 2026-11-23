@@ -1,0 +1,22 @@
+# Run/resume from capstone/reid: ../.venv/bin/python benchmark.py vehicle-reference
+device: auto
+cpu_threads: 4
+batch_size: 32
+checkpoint_batches: 8
+output: metrics/vehicle_reference
+state_root: data/vehicle_reference
+transfer_selection: metrics/aerial_transfer/selection.pt
+transfer_state: data/aerial_transfer
+base_config: configs/reid_teacher.yaml
+calibration_query: data/aerial_training/vrai_fit_query.csv
+calibration_gallery: data/aerial_training/vrai_fit_gallery.csv
+prepared_audit: data/aerial_training/prepared.yaml
+training_manifest: data/aerial_training/train.csv
+false_acceptance_budget: 0.01
+models: [original, mixed_adasp, msinet]
+cost:
+  batches: [1, 32]
+  warmup_iterations: 5
+  measured_iterations: 20
+review:
+  maximum_examples: 48

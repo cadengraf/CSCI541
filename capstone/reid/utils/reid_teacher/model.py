@@ -19,8 +19,10 @@ def build(settings, identities, pretrained=True):
     # Upstream imports an internal Torch compatibility module removed in Torch 2.
     if 'torch._six' not in sys.modules:
         compatibility = ModuleType('torch._six')
-        compatibility.container_abcs = collections.abc
         sys.modules['torch._six'] = compatibility
+    # Torch 1.13 may have already imported _six, but removed this attribute.
+    if not hasattr(sys.modules['torch._six'], 'container_abcs'):
+        sys.modules['torch._six'].container_abcs = collections.abc
     if str(source) not in sys.path:
         sys.path.insert(0, str(source))
     from config import cfg as default

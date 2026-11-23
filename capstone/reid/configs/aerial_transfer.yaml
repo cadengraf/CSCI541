@@ -1,0 +1,29 @@
+# Run/resume: ../.venv/bin/python benchmark.py aerial-transfer
+device: auto
+cpu_threads: 4
+batch_size: 32
+checkpoint_batches: 8
+output: metrics/aerial_transfer
+state_root: data/aerial_transfer
+dataset_root: data/aerial/VisDrone2019-MOT-val
+base_config: configs/reid_teacher.yaml
+mixed_selection: metrics/aerial_benchmark/selection.yaml
+original_selection: checkpoints/reid_teacher/selected.yaml
+original_operating_points: metrics/vehicle_reid/cross_camera/operating_points.yaml
+original_calibration_state: metrics/vehicle_reid/cross_camera/calibration/state.pt
+training_audit: data/aerial_training/audit.sqlite
+training_manifests:
+  - data/aerial_training/train.csv
+  - data/aerial/vrai/train_disjoint.csv
+models: [original, mixed_baseline, mixed_degradation, mixed_hard_sampling, mixed_adasp]
+protocol:
+  vehicle_classes: [4, 5, 6, 9]
+  minimum_reference_side: 16
+  minimum_query_side: 12
+  minimum_gap_frames: 60
+  query_spacing_frames: 30
+  maximum_queries_per_identity: 8
+  withheld_every: 5
+review:
+  models: [original, mixed_adasp]
+  maximum_examples: 60

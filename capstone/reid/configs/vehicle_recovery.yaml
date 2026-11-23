@@ -1,0 +1,34 @@
+# Run/resume: ../.venv/bin/python benchmark.py vehicle-recovery
+device: auto
+cpu_threads: 4
+batch_size: 32
+checkpoint_frames: 25
+output: metrics/vehicle_recovery
+state_root: data/vehicle_recovery
+dataset_root: data/aerial/VisDrone2019-MOT-val
+selection: checkpoints/reid_teacher/selected.yaml
+reference_config: configs/vehicle_reid.yaml
+candidate_config: configs/vehicle_reid_query_pool.yaml
+scenarios: [natural, target_blackout]
+cases:
+  - {sequence: uav0000117_02622_v, target: 107}
+  - {sequence: uav0000137_00458_v, target: 23}
+  - {sequence: uav0000182_00000_v, target: 4}
+observations:
+  classes: [4, 5, 6, 9]
+  minimum_side: 12
+  trusted_minimum_side: 24
+  border: 2
+  maximum_overlap_fraction: 0.5
+blackout:
+  enrollment_frames: 40
+  duration_frames: 45
+evaluation:
+  minimum_gap_frames: 2
+  long_gap_frames: 16
+  recovery_window_frames: 30
+  max_false_reconnection_rate: 0.01
+  minimum_scored_reconnections: 20
+video:
+  fps: 10
+  panel_width: 800

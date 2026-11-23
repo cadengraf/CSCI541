@@ -1,0 +1,24 @@
+# ../.venv/bin/python benchmark.py vehicle-budget
+# Only these training-partition sequences select an operating point.
+sequences: [4, 5, 11, 20]
+data_root: data/kitti_mots
+cache: data/tracking/teacher_cache
+features: data/vehicle_recovery_budget/specialist
+pipeline_config: configs/vehicle_reid_experimental.yaml
+output: metrics/vehicle_recovery_budget
+state_root: data/vehicle_recovery_budget/calibration
+cpu_threads: 4
+cpu_workers: 3
+checkpoint_every: 25
+score_threshold: 0.3
+min_mask_pixels: 10
+recovery_window: 10
+budget:
+  max_false_reconnection_rate: 0.01
+  minimum_scored_accepts: 20
+  require_no_unscored_claims: true
+# Frozen before evaluating development results. No validation sequences in selection.
+grid:
+  similarity: [0.70, 0.78, 0.82, 0.86, 0.90, 0.94]
+  margin: [0.04, 0.08, 0.12]
+  hits: [3]

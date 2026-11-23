@@ -1,0 +1,70 @@
+# One command: ../.venv/bin/python train.py appearance
+# Initial equal-budget continuation pilots; original specialist stays unchanged.
+base_config: configs/reid_teacher.yaml
+start_checkpoint: checkpoints/reid_teacher/transreid.best.pt
+start_sha256: 1b28450cfb5e6c4f4ff45f5bc1dc66277993c8baad7a79dc926bd00089b06e1c
+output: metrics/appearance_training
+checkpoint_dir: checkpoints/appearance_training
+state_root: data/appearance_training
+device: auto
+cpu_threads: 4
+seed: 42
+training:
+  epochs: 3
+  steps_per_epoch: 400
+  learning_rate: 0.000002
+  classifier_learning_rate: 0.00001
+  save_every_steps: 50
+  identities_per_batch: 8
+  images_per_identity: 4
+  mixed_precision: true
+  classifier_warmup_epochs: 0
+  metric_temperature: 0.04
+mining:
+  images_per_camera: 2
+  top_k: 20
+  hard_identities_per_batch: 4
+  checkpoint_batches: 20
+augmentation:
+  probability: 0.5
+  crop_scale: [0.9, 1.1]
+  translation: 0.05
+  downsample_probability: 0.5
+  short_side: [24, 112]
+  blur_probability: 0.25
+  blur_radius: [0.2, 1.2]
+  jpeg_probability: 0.25
+  jpeg_quality: [55, 95]
+selection:
+  false_acceptance_budget: 0.01
+  minimum_known_gain: 0.01
+  maximum_map_drop: 0.005
+  calibration_fit: even_sorted_identity_indices
+  model_selection: odd_sorted_identity_indices
+  final_evaluation: disabled
+variants:
+  continuation: {augmentation: false, hard_sampling: false, metric: triplet}
+  degradation: {augmentation: true, hard_sampling: false, metric: triplet}
+  hard_sampling: {augmentation: false, hard_sampling: true, metric: triplet}
+  adasp: {augmentation: false, hard_sampling: false, metric: adasp}
+combination:
+  enabled: true
+  requires: [degradation, hard_sampling]
+  settings: {augmentation: true, hard_sampling: true, metric: triplet}
+# Official algorithm source already present; no vendor files are modified.
+adasp_source: data/aerial/vru/baselines/Benchmarking-ReID/methods/AdaSP/fastreid/modeling/losses/adasp_loss.py
+clip:
+  enabled: true
+  source: data/aerial/vru/baselines/Benchmarking-ReID/methods/CLIP-ReID
+  repository_root: data/aerial/vru/baselines/Benchmarking-ReID
+  revision: 8b1cb5551fadfb4b5dde62769a250ba2416e13fe
+  weights: checkpoints/pretrained/clip/ViT-B-16.pt
+  sha256: 5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f
+  url: https://openaipublic.azureedge.net/clip/models/5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f/ViT-B-16.pt
+  stage1_checkpoint: checkpoints/appearance_training/clip_prompt/seed.pt
+  prompt_steps: 600
+  prompt_batch: 64
+  prompt_learning_rate: 0.00035
+  training:
+    learning_rate: 0.000005
+    classifier_learning_rate: 0.0001

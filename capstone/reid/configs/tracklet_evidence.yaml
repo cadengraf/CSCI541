@@ -1,0 +1,35 @@
+# One command: ../.venv/bin/python benchmark.py vehicle-evidence
+# Appearance aggregation is selected on these development sequences only.
+sequences: [4, 5, 11, 20]
+data_root: data/kitti_mots
+cache: data/tracking/teacher_cache
+features: data/vehicle_recovery_budget/specialist
+pipeline_config: configs/vehicle_reid_experimental.yaml
+output: metrics/vehicle_tracklet_evidence
+state_root: data/vehicle_tracklet_evidence
+cpu_threads: 4
+cpu_workers: 3
+checkpoint_every: 50
+score_threshold: 0.3
+min_mask_pixels: 10
+recovery_window: 10
+budget:
+  max_false_reconnection_rate: 0.01
+  minimum_scored_accepts: 20
+  require_no_unscored_claims: true
+grid:
+  similarity: [0.78, 0.82, 0.86]
+  margin: [0.04, 0.08, 0.12]
+# Query evidence requires three spaced observations, so pooled modes use one
+# aggregate decision rather than another three-frame confirmation afterward.
+evidence:
+  min_samples: 3
+  max_samples: 8
+  sample_gap: 2
+  min_span: 4
+  coherence: 0.85
+modes:
+  frame_control: {aggregation: false, recovery_hits: 3}
+  query_mean: {aggregation: true, pool_source: false, quarantine_recovered_memory: false, recovery_hits: 1}
+  dual_pool: {aggregation: true, pool_source: true, quarantine_recovered_memory: false, recovery_hits: 1}
+  dual_quarantine: {aggregation: true, pool_source: true, quarantine_recovered_memory: true, recovery_hits: 1}

@@ -8,7 +8,7 @@ shows every measured model.
 evaluating a future full-frame vehicle detection, segmentation, and ReID model.
 
 These are **crop-only ReID baselines** for the full-frame system described in
-[FULL_FRAME_MOTS.md](../FULL_FRAME_MOTS.md). They do not measure vehicle
+[FULL_FRAME_MOTS.md](../docs/archive/full_frame_prototype.md). They do not measure vehicle
 detection, per-vehicle instance masks, or end-to-end tracking.
 
 To refresh both pages without rerunning models:

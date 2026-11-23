@@ -10,7 +10,7 @@ from .common import ROOT, read, encode, save
 
 
 @torch.inference_mode()
-def export(check=False, selected=False):
+def export(check=False, selected=False, development_sequences=None):
     from utils.teacher.settings import read as teacher_settings
     from utils.teacher.assets import sha256
     from utils.teacher.model import CoDINOJoint
@@ -38,7 +38,13 @@ def export(check=False, selected=False):
         raise ValueError('Cached predictions use different weights/settings; choose another cache folder')
     manifest.write_text(yaml.safe_dump(provenance))
     sequences = config['data']['val_sequences']
-    if check:
+    if development_sequences is not None:
+        if check or selected or not development_sequences or not set(development_sequences) <= set(config['data']['train_sequences']):
+            raise ValueError('Development cache must use only explicitly selected training sequences')
+        if len(set(development_sequences)) != len(development_sequences):
+            raise ValueError('Duplicate development sequences')
+        sequences = development_sequences
+    elif check:
         first = int(settings['check_sequence'])
         sequences = [first, next(seq for seq in sequences if seq != first)]
     elif selected:

@@ -1,0 +1,25 @@
+# One controlled training change; run both arms with train.py joint-metric.
+start_checkpoint: checkpoints/crop_training/square_256.best.pt
+start_sha256: 427303c8799bfcdea33bf3edfae6fe3407614c9157d96d8f53a5adcd8d491754
+base_config: configs/distill_joint.yaml
+output: metrics/joint_metric
+checkpoint_dir: checkpoints/joint_metric
+experiment_name: joint_metric
+predictions_name: joint_metric
+device: auto
+epochs: 8
+steps_per_epoch: 1500
+identities_per_batch: 4
+learning_rate: 1.0e-05
+backbone_learning_rate: 1.0e-06
+frozen_backbone_epochs: 0
+save_every_steps: 100
+seed: 42
+calibration_max_ids: null
+evaluate_kitti_after_train: false
+use_auxiliary_losses: true
+metric_temperature: 0.04
+model_variants:
+  control: {crop_geometry: square, crop_size: 256}
+  candidate: {crop_geometry: square, crop_size: 256}
+warmstart_model_fields: []

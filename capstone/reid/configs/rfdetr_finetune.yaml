@@ -1,0 +1,43 @@
+# User launches train.py rfdetr; official nine-sequence validation is benchmark-only.
+run: rfdetr_seg_large_kitti_v1
+device: auto
+environment: ../.rfdetr-env
+base_comparison: configs/detector_compare.yaml
+dataset_root: data/kitti_mots
+data_output: data/rfdetr_finetune/kitti_v1
+output: checkpoints/rfdetr_finetune/kitti_v1
+metrics: metrics/rfdetr_finetune/kitti_v1
+train_sequences: [0, 1, 3, 4, 5, 11, 12, 15, 17, 20]
+development_sequences: [9, 19]
+benchmark_sequences: [2, 6, 7, 8, 10, 13, 14, 16, 18]
+pretrained_num_queries: 300
+pretrained_group_detr: 13
+training:
+  epochs: 30
+  batch_size: 2
+  grad_accum_steps: 4
+  eval_batch_size: 2
+  lr: 0.0001
+  lr_encoder: 0.00001
+  weight_decay: 0.0001
+  seed: 42
+  num_workers: 2
+  use_ema: true
+  multi_scale: false
+  expanded_scales: false
+  augmentation_backend: torchvision
+  amp_dtype: auto
+  warmup_epochs: 1.0
+  lr_scheduler: cosine
+  checkpoint_interval: 10000
+  skip_best_epochs: 0
+  best_model_metric: map
+  early_stopping: false
+  tensorboard: false
+  wandb: false
+  mlflow: false
+  run_test: false
+  progress_bar: tqdm
+  save_dataset_grids: false
+  eval_backend: faster_coco_eval
+checkpoint_steps: 100

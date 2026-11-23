@@ -1,0 +1,9 @@
+# Run/resume: ../.venv/bin/python benchmark.py aerial
+training_config: configs/aerial_training.yaml
+output: metrics/aerial_benchmark
+state_root: data/aerial_benchmark
+device: auto
+cpu_threads: 4
+batch_size: 32
+checkpoint_batches: 64
+variants: [mixed_baseline, mixed_degradation, mixed_hard_sampling, mixed_adasp]

@@ -29,7 +29,7 @@ def evaluate(gt_root, trackers_root, names, sequences, output, print_results=Tru
         import trackeval
         from pycocotools import mask  # noqa: F401
     except ImportError as error:
-        raise RuntimeError('Install benchmark dependencies: python -m pip install -r requirements-mots.txt') from error
+        raise RuntimeError('Install benchmark dependencies: python -m pip install -r requirements.txt') from error
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     with _numpy_compatibility():

@@ -1,0 +1,30 @@
+# First RF-DETR stage: replace discovery/masks, hold TransReID + local tracker fixed.
+run: codino_vs_rfdetr_seg_large_v1
+device: auto
+output: metrics/detector_compare
+state_root: data/detector_compare
+dataset_root: data/kitti_mots
+sequences: [2, 6, 7, 8, 10, 13, 14, 16, 18]
+checkpoint_frames: 25
+score_threshold: 0.3
+mask_threshold: 0.5
+minimum_mask_pixels: 10
+specialist_selection: checkpoints/reid_teacher/selected.yaml
+specialist_batch_size: 8
+tracking_config: configs/vehicle_reid.yaml
+codino:
+  checkpoint: checkpoints/joint_metric/candidate.best.pt
+  environment: ../.teacher-env
+rfdetr:
+  package_version: 1.12.1
+  model_class: RFDETRSegLarge
+  resolution: 504
+  coco_car_id: 3
+  environment: ../.rfdetr-env
+  checkpoint: checkpoints/pretrained/rf-detr-seg-large.pt
+  url: https://repo.roboflow.com/rfdetr/rf-detr-seg-l-ft.pth
+  md5: 275f7b094909544ed2841c94a677d07e
+video:
+  sequence: '0010'
+  frames: 200
+  fps: 10
